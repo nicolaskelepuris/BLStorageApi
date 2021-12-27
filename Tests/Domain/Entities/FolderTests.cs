@@ -114,22 +114,21 @@ public class FolderTests
     }
 
     [Fact]
-    public void MoveSubFolder_ToNullDestination_ShouldMove()
+    public void MoveSubFolder_ToNullDestination_ShouldThrow()
     {
         var folder = new Folder("name");
         var subFolder = new Folder("subFolder");
-
-        folder.MoveSubFolder(subFolder, destination: null);
-
-        folder.SubFolders.Should().BeEmpty();
-        subFolder.Parent.Should().BeNull();
+        folder.Invoking(_ => _.MoveSubFolder(subFolder, destination: null))
+            .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
     public void MoveSubFolder_NullSubFolder_ShouldThrow()
     {
         var folder = new Folder("name");
-        folder.Invoking(_ => _.MoveSubFolder(subFolder: null, destination: null))
+        var destination = new Folder("destination");
+
+        folder.Invoking(_ => _.MoveSubFolder(subFolder: null, destination))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
@@ -177,7 +176,7 @@ public class FolderTests
     [Fact]
     public void MoveFile_NullFile_ShouldThrow()
     {
-        var folder = new Folder("name");
+        var folder = new Folder("name");        
         folder.Invoking(_ => _.MoveFile(file: null, destination: null))
             .Should().ThrowExactly<ArgumentNullException>();
     }

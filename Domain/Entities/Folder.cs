@@ -49,12 +49,13 @@ public class Folder : BaseEntity
         files.Add(file);
     }
 
-    public void MoveSubFolder(Folder subFolder, Folder? destination)
+    public void MoveSubFolder(Folder subFolder, Folder destination)
     {
         ArgumentNullException.ThrowIfNull(subFolder);
+        ArgumentNullException.ThrowIfNull(destination);
 
         subFolders.Remove(subFolder);
-        destination?.AddSubFolder(subFolder);
+        destination.AddSubFolder(subFolder);
     }
 
     public void MoveFile(File file, Folder? destination)
