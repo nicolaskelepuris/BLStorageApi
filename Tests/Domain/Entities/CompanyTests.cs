@@ -28,4 +28,14 @@ public class CompanyTests
 
         constructor.Should().ThrowExactly<ArgumentException>();
     }
+
+    [Fact]
+    public void ConstructCompany_NotValidRootDifferentName_ShouldThrow()
+    {
+        var root = Folder.CreateRoot("root");
+
+        var constructor = () => new Company("company", root);
+
+        constructor.Should().ThrowExactly<ArgumentException>();
+    }
 }
