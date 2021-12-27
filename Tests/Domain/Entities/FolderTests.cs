@@ -37,7 +37,7 @@ public class FolderTests
     }
 
     [Fact]
-    public void AddFile_EmptySubFiles_ShouldAdd()
+    public void AddFile_EmptyFiles_ShouldAdd()
     {
         var folder = new Folder("name");
         var file = new File("file");
@@ -45,6 +45,22 @@ public class FolderTests
         folder.AddFile(file);
 
         folder.Files.Should().HaveCount(1);
+        folder.Files.Should().Contain(file);
+        file.Parent.Should().Be(folder);
+    }
+
+    [Fact]
+    public void AddFile_NotEmptyFiles_ShouldAdd()
+    {
+        var files = new List<File>(){
+            new File("any file")
+        };
+        var folder = new Folder("name", new List<Folder>(), files);
+        var file = new File("file");
+
+        folder.AddFile(file);
+
+        folder.Files.Should().HaveCount(2);
         folder.Files.Should().Contain(file);
         file.Parent.Should().Be(folder);
     }
