@@ -25,7 +25,7 @@ public class Folder : BaseEntity
         return new Folder(name);
     }
 
-    public string Name { get; private set; }
+    public string Name { get; }
 
     public IReadOnlyCollection<Folder> SubFolders
     {
