@@ -5,19 +5,14 @@ namespace Domain.Entities;
 
 public class Folder : BaseEntity
 {
-    public Folder(string name, ICollection<Folder> subFolders, ICollection<File> files, Folder? parent)
+    public Folder(string name, ICollection<Folder> subFolders, ICollection<File> files)
     {
         Name = name;
         this.subFolders = subFolders;
         this.files = files;
-        Parent = parent;
     }
 
-    public Folder(string name) : this(name, new List<Folder>(), new List<File>(), parent: null)
-    {
-    }
-
-    public Folder(string name, Folder parent) : this(name, new List<Folder>(), new List<File>(), parent)
+    public Folder(string name) : this(name, new List<Folder>(), new List<File>())
     {
     }
 
@@ -39,6 +34,7 @@ public class Folder : BaseEntity
 
     public void AddSubFolder(Folder folder)
     {
+        folder.Parent = this;
         subFolders.Add(folder);
     }
 }
