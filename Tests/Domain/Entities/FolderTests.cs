@@ -75,7 +75,7 @@ public class FolderTests
 
         folder.MoveSubFolder(subFolder, anotherFolder);
 
-        folder.Files.Should().BeEmpty();
+        folder.SubFolders.Should().BeEmpty();
         anotherFolder.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(anotherFolder);
     }
@@ -89,8 +89,37 @@ public class FolderTests
 
         folder.MoveSubFolder(subFolder, anotherFolder);
 
-        folder.Files.Should().BeEmpty();
+        folder.SubFolders.Should().BeEmpty();
         anotherFolder.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(anotherFolder);
+    }
+
+    [Fact]
+    public void MoveFile_ValidFile_ShouldMove()
+    {
+        var folder = new Folder("name");
+        var file = new File("file");
+        folder.AddFile(file);
+        var anotherFolder = new Folder("another folder");
+
+        folder.MoveFile(file, anotherFolder);
+
+        folder.Files.Should().BeEmpty();
+        anotherFolder.Files.Should().Contain(file);
+        file.Parent.Should().Be(anotherFolder);
+    }
+
+    [Fact]
+    public void MoveFile_NotFoundFile_ShouldMove()
+    {
+        var folder = new Folder("name");
+        var file = new File("file");
+        var anotherFolder = new Folder("another folder");
+
+        folder.MoveFile(file, anotherFolder);
+
+        folder.Files.Should().BeEmpty();
+        anotherFolder.Files.Should().Contain(file);
+        file.Parent.Should().Be(anotherFolder);
     }
 }

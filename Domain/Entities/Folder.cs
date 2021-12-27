@@ -49,4 +49,10 @@ public class Folder : BaseEntity
         subFolders.Remove(subFolder);
         destination.AddSubFolder(subFolder);
     }
+
+    public void MoveFile(File file, Folder destination)
+    {
+        files.Remove(file);
+        destination.AddFile(file);
+    }
 }
