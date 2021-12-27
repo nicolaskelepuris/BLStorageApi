@@ -8,9 +8,11 @@ public class CompanyTests
     [Fact]
     public void ConstructCompany_ValidRoot_ShouldConstruct()
     {
-        var root = Folder.CreateRoot("root");
-        var company = new Company("company", root);
+        var companyName = "company";
+        var root = Folder.CreateRoot(companyName);
+        var company = new Company(companyName, root);
 
         company.Root.Should().Be(root);
+        company.Root.Name.Should().Be(company.Name);
     }
 }
