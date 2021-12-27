@@ -79,4 +79,18 @@ public class FolderTests
         anotherFolder.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(anotherFolder);
     }
+
+    [Fact]
+    public void MoveSubFolder_NotFoundSubFolder_ShouldMove()
+    {
+        var folder = new Folder("name");
+        var subFolder = new Folder("subFolder");
+        var anotherFolder = new Folder("another folder");
+
+        folder.MoveSubFolder(subFolder, anotherFolder);
+
+        folder.Files.Should().BeEmpty();
+        anotherFolder.SubFolders.Should().Contain(subFolder);
+        subFolder.Parent.Should().Be(anotherFolder);
+    }
 }
