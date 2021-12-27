@@ -51,7 +51,7 @@ public class FolderTests
     public void AddFile_EmptyFiles_ShouldAdd()
     {
         var root = Folder.CreateRoot("root");
-        var file = new File("file");
+        var file = new File("file", root);
 
         root.AddFile(file);
 
@@ -64,8 +64,8 @@ public class FolderTests
     public void AddFile_ManyFiles_ShouldAdd()
     {
         var root = Folder.CreateRoot("root");
-        var file = new File("file");
-        var anotherFile = new File("any file");
+        var file = new File("file", root);
+        var anotherFile = new File("any file", root);
 
         root.AddFile(file);
         root.AddFile(anotherFile);
@@ -139,7 +139,7 @@ public class FolderTests
     public void MoveFile_ValidFile_ShouldMove()
     {
         var root = Folder.CreateRoot("root");
-        var file = new File("file");
+        var file = new File("file", root);
         root.AddFile(file);
         var anotherFolder = new Folder("another folder", root);
 
@@ -154,7 +154,7 @@ public class FolderTests
     public void MoveFile_NotFoundFile_ShouldMove()
     {
         var root = Folder.CreateRoot("root");
-        var file = new File("file");
+        var file = new File("file", root);
         var anotherFolder = new Folder("another folder", root);
 
         root.MoveFile(file, anotherFolder);
@@ -168,7 +168,7 @@ public class FolderTests
     public void MoveFile_ToNullDestination_ShouldMove()
     {
         var root = Folder.CreateRoot("root");
-        var file = new File("file");
+        var file = new File("file", root);
 
         root.Invoking(_ => _.MoveFile(file, destination: null))
             .Should().ThrowExactly<ArgumentNullException>();
