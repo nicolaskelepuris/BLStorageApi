@@ -6,21 +6,17 @@ namespace Domain.Entities;
 
 public class Folder : BaseEntity
 {
-    public Folder(string name, ICollection<Folder> subFolders, ICollection<File> files)
+    public Folder(string name)
     {
         Name = name;
-        this.subFolders = subFolders;
-        this.files = files;
-    }
-
-    public Folder(string name) : this(name, new List<Folder>(), new List<File>())
-    {
+        subFolders = new List<Folder>();
+        files = new List<File>();
     }
 
     public Folder(string name, Folder parent) : this(name)
     {
         ArgumentNullException.ThrowIfNull(parent);
-        
+
         Parent = parent;
     }
 

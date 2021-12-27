@@ -22,19 +22,20 @@ public class FolderTests
     }
 
     [Fact]
-    public void AddSubFolder_NotEmptySubFolders_ShouldAdd()
+    public void AddSubFolder_ManySubFolders_ShouldAdd()
     {
-        var subFolders = new List<Folder>(){
-            new Folder("any subFolder")
-        };
-        var folder = new Folder("name", subFolders, new List<File>());
+        var folder = new Folder("name");
         var subFolder = new Folder("subFolder");
+        var anotherSubFolder = new Folder("another subFolder");
 
         folder.AddSubFolder(subFolder);
+        folder.AddSubFolder(anotherSubFolder);
 
         folder.SubFolders.Should().HaveCount(2);
         folder.SubFolders.Should().Contain(subFolder);
+        folder.SubFolders.Should().Contain(anotherSubFolder);
         subFolder.Parent.Should().Be(folder);
+        anotherSubFolder.Parent.Should().Be(folder);
     }
 
     [Fact]
@@ -60,19 +61,20 @@ public class FolderTests
     }
 
     [Fact]
-    public void AddFile_NotEmptyFiles_ShouldAdd()
+    public void AddFile_ManyFiles_ShouldAdd()
     {
-        var files = new List<File>(){
-            new File("any file")
-        };
-        var folder = new Folder("name", new List<Folder>(), files);
+        var folder = new Folder("name");
         var file = new File("file");
+        var anotherFile = new File("any file");
 
         folder.AddFile(file);
+        folder.AddFile(anotherFile);
 
         folder.Files.Should().HaveCount(2);
         folder.Files.Should().Contain(file);
+        folder.Files.Should().Contain(anotherFile);
         file.Parent.Should().Be(folder);
+        anotherFile.Parent.Should().Be(folder);
     }
 
     [Fact]
