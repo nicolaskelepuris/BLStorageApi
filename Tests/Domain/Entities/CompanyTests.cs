@@ -1,3 +1,4 @@
+using System;
 using Domain.Entities;
 using FluentAssertions;
 using Xunit;
@@ -14,5 +15,17 @@ public class CompanyTests
 
         company.Root.Should().Be(root);
         company.Root.Name.Should().Be(company.Name);
+    }
+
+    [Fact]
+    public void ConstructCompany_NotValidRootNotARoot_ShouldThrow()
+    {
+        var companyName = "company";
+        var root = Folder.CreateRoot("root");
+        var notARoot = new Folder(companyName, root);
+
+        var constructor = () => new Company(companyName, notARoot);
+
+        constructor.Should().ThrowExactly<ArgumentException>();
     }
 }
