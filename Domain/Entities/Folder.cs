@@ -37,4 +37,10 @@ public class Folder : BaseEntity
         folder.Parent = this;
         subFolders.Add(folder);
     }
+
+    public void AddFile(File file)
+    {
+        file.Parent = this;
+        files.Add(file);
+    }
 }
