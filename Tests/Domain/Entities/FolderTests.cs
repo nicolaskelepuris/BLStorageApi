@@ -71,13 +71,13 @@ public class FolderTests
         var folder = new Folder("name");
         var subFolder = new Folder("subFolder");
         folder.AddSubFolder(subFolder);
-        var anotherFolder = new Folder("another folder");
+        var destination = new Folder("another folder");
 
-        folder.MoveSubFolder(subFolder, anotherFolder);
+        folder.MoveSubFolder(subFolder, destination);
 
         folder.SubFolders.Should().BeEmpty();
-        anotherFolder.SubFolders.Should().Contain(subFolder);
-        subFolder.Parent.Should().Be(anotherFolder);
+        destination.SubFolders.Should().Contain(subFolder);
+        subFolder.Parent.Should().Be(destination);
     }
 
     [Fact]
@@ -85,13 +85,25 @@ public class FolderTests
     {
         var folder = new Folder("name");
         var subFolder = new Folder("subFolder");
-        var anotherFolder = new Folder("another folder");
+        var destination = new Folder("another folder");
 
-        folder.MoveSubFolder(subFolder, anotherFolder);
+        folder.MoveSubFolder(subFolder, destination);
 
         folder.SubFolders.Should().BeEmpty();
-        anotherFolder.SubFolders.Should().Contain(subFolder);
-        subFolder.Parent.Should().Be(anotherFolder);
+        destination.SubFolders.Should().Contain(subFolder);
+        subFolder.Parent.Should().Be(destination);
+    }
+
+    [Fact]
+    public void MoveSubFolder_ToNullDestination_ShouldMove()
+    {
+        var folder = new Folder("name");
+        var subFolder = new Folder("subFolder");
+
+        folder.MoveSubFolder(subFolder, destination: null);
+
+        folder.SubFolders.Should().BeEmpty();
+        subFolder.Parent.Should().BeNull();
     }
 
     [Fact]
@@ -121,5 +133,17 @@ public class FolderTests
         folder.Files.Should().BeEmpty();
         anotherFolder.Files.Should().Contain(file);
         file.Parent.Should().Be(anotherFolder);
+    }
+
+    [Fact]
+    public void MoveFile_ToNullDestination_ShouldMove()
+    {
+        var folder = new Folder("name");
+        var file = new File("file");
+
+        folder.MoveFile(file, destination: null);
+
+        folder.Files.Should().BeEmpty();
+        file.Parent.Should().BeNull();
     }
 }

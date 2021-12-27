@@ -44,15 +44,15 @@ public class Folder : BaseEntity
         files.Add(file);
     }
 
-    public void MoveSubFolder(Folder subFolder, Folder destination)
+    public void MoveSubFolder(Folder subFolder, Folder? destination)
     {
         subFolders.Remove(subFolder);
-        destination.AddSubFolder(subFolder);
+        destination?.AddSubFolder(subFolder);
     }
 
-    public void MoveFile(File file, Folder destination)
+    public void MoveFile(File file, Folder? destination)
     {
         files.Remove(file);
-        destination.AddFile(file);
+        destination?.AddFile(file);
     }
 }
