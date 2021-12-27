@@ -17,6 +17,18 @@ public class Folder : BaseEntity
     {
     }
 
+    public Folder(string name, Folder parent) : this(name)
+    {
+        ArgumentNullException.ThrowIfNull(parent);
+        
+        Parent = parent;
+    }
+
+    public static Folder CreateRoot(string name)
+    {
+        return new Folder(name);
+    }
+
     public string Name { get; private set; }
 
     public IReadOnlyCollection<Folder> SubFolders

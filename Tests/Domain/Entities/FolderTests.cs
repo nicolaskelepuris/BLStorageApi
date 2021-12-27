@@ -180,4 +180,21 @@ public class FolderTests
         folder.Invoking(_ => _.MoveFile(file: null, destination))
             .Should().ThrowExactly<ArgumentNullException>();
     }
+
+    [Fact]
+    public void ConstructFolder_ValidParent_ShouldConstruct()
+    {
+        var root = Folder.CreateRoot("root");
+        var folder = new Folder("name", parent: root);
+
+        folder.Parent.Should().Be(root);
+    }
+
+    [Fact]
+    public void ConstructFolder_NullParent_ShouldThrow()
+    {
+        var folder = () => new Folder("name", parent: null);
+
+        folder.Should().ThrowExactly<ArgumentNullException>();
+    }
 }
