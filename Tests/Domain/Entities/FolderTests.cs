@@ -167,17 +167,17 @@ public class FolderTests
         var folder = new Folder("name");
         var file = new File("file");
 
-        folder.MoveFile(file, destination: null);
-
-        folder.Files.Should().BeEmpty();
-        file.Parent.Should().BeNull();
+        folder.Invoking(_ => _.MoveFile(file, destination: null))
+            .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
     public void MoveFile_NullFile_ShouldThrow()
     {
-        var folder = new Folder("name");        
-        folder.Invoking(_ => _.MoveFile(file: null, destination: null))
+        var folder = new Folder("name");
+        var destination = new Folder("destination");
+
+        folder.Invoking(_ => _.MoveFile(file: null, destination))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 }
