@@ -33,14 +33,18 @@ public class Folder : BaseEntity
 
     public Folder? Parent { get; private set; }
 
-    public void AddSubFolder(Folder folder)
+    public void AddSubFolder(Folder subFolder)
     {
-        folder.Parent = this;
-        subFolders.Add(folder);
+        ArgumentNullException.ThrowIfNull(subFolder);
+
+        subFolder.Parent = this;
+        subFolders.Add(subFolder);
     }
 
     public void AddFile(File file)
     {
+        ArgumentNullException.ThrowIfNull(file);
+
         file.Parent = this;
         files.Add(file);
     }

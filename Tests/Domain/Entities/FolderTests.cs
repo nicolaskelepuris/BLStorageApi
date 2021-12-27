@@ -9,7 +9,7 @@ namespace Tests.Domain.Entities;
 public class FolderTests
 {
     [Fact]
-    public void AddFolder_EmptySubFolders_ShouldAdd()
+    public void AddSubFolder_EmptySubFolders_ShouldAdd()
     {
         var folder = new Folder("name");
         var subFolder = new Folder("subFolder");
@@ -22,7 +22,7 @@ public class FolderTests
     }
 
     [Fact]
-    public void AddFolder_NotEmptySubFolders_ShouldAdd()
+    public void AddSubFolder_NotEmptySubFolders_ShouldAdd()
     {
         var subFolders = new List<Folder>(){
             new Folder("any subFolder")
@@ -35,6 +35,15 @@ public class FolderTests
         folder.SubFolders.Should().HaveCount(2);
         folder.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(folder);
+    }
+
+    [Fact]
+    public void AddSubFolder_NullSubFolder_ShouldThrow()
+    {
+        var folder = new Folder("name");
+
+        folder.Invoking(_ => _.AddSubFolder(subFolder: null))
+            .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
@@ -64,6 +73,15 @@ public class FolderTests
         folder.Files.Should().HaveCount(2);
         folder.Files.Should().Contain(file);
         file.Parent.Should().Be(folder);
+    }
+
+    [Fact]
+    public void AddFile_NullFile_ShouldThrow()
+    {
+        var folder = new Folder("name");
+
+        folder.Invoking(_ => _.AddFile(file: null))
+            .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
