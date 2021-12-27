@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Domain.Entities;
 using FluentAssertions;
@@ -107,6 +108,14 @@ public class FolderTests
     }
 
     [Fact]
+    public void MoveSubFolder_NullSubFolder_ShouldThrow()
+    {
+        var folder = new Folder("name");
+        folder.Invoking(_ => _.MoveSubFolder(subFolder: null, destination: null))
+            .Should().ThrowExactly<ArgumentNullException>();
+    }
+
+    [Fact]
     public void MoveFile_ValidFile_ShouldMove()
     {
         var folder = new Folder("name");
@@ -145,5 +154,13 @@ public class FolderTests
 
         folder.Files.Should().BeEmpty();
         file.Parent.Should().BeNull();
+    }
+
+    [Fact]
+    public void MoveFile_NullFile_ShouldThrow()
+    {
+        var folder = new Folder("name");
+        folder.Invoking(_ => _.MoveFile(file: null, destination: null))
+            .Should().ThrowExactly<ArgumentNullException>();
     }
 }

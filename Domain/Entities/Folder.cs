@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Domain.Entities.Base;
 
@@ -46,12 +47,16 @@ public class Folder : BaseEntity
 
     public void MoveSubFolder(Folder subFolder, Folder? destination)
     {
+        ArgumentNullException.ThrowIfNull(subFolder);
+
         subFolders.Remove(subFolder);
         destination?.AddSubFolder(subFolder);
     }
 
     public void MoveFile(File file, Folder? destination)
     {
+        ArgumentNullException.ThrowIfNull(file);
+
         files.Remove(file);
         destination?.AddFile(file);
     }
