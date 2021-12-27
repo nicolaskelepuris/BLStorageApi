@@ -6,7 +6,7 @@ namespace Domain.Entities;
 
 public class Folder : BaseEntity
 {
-    public Folder(string name)
+    private Folder(string name)
     {
         Name = name;
         subFolders = new List<Folder>();

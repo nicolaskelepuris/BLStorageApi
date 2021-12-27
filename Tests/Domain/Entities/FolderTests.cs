@@ -11,92 +11,92 @@ public class FolderTests
     [Fact]
     public void AddSubFolder_EmptySubFolders_ShouldAdd()
     {
-        var folder = new Folder("name");
-        var subFolder = new Folder("subFolder");
+        var root = Folder.CreateRoot("root");
+        var subFolder = new Folder("subFolder", root);
 
-        folder.AddSubFolder(subFolder);
+        root.AddSubFolder(subFolder);
 
-        folder.SubFolders.Should().HaveCount(1);
-        folder.SubFolders.Should().Contain(subFolder);
-        subFolder.Parent.Should().Be(folder);
+        root.SubFolders.Should().HaveCount(1);
+        root.SubFolders.Should().Contain(subFolder);
+        subFolder.Parent.Should().Be(root);
     }
 
     [Fact]
     public void AddSubFolder_ManySubFolders_ShouldAdd()
     {
-        var folder = new Folder("name");
-        var subFolder = new Folder("subFolder");
-        var anotherSubFolder = new Folder("another subFolder");
+        var root = Folder.CreateRoot("root");
+        var subFolder = new Folder("subFolder", root);
+        var anotherSubFolder = new Folder("another subFolder", root);
 
-        folder.AddSubFolder(subFolder);
-        folder.AddSubFolder(anotherSubFolder);
+        root.AddSubFolder(subFolder);
+        root.AddSubFolder(anotherSubFolder);
 
-        folder.SubFolders.Should().HaveCount(2);
-        folder.SubFolders.Should().Contain(subFolder);
-        folder.SubFolders.Should().Contain(anotherSubFolder);
-        subFolder.Parent.Should().Be(folder);
-        anotherSubFolder.Parent.Should().Be(folder);
+        root.SubFolders.Should().HaveCount(2);
+        root.SubFolders.Should().Contain(subFolder);
+        root.SubFolders.Should().Contain(anotherSubFolder);
+        subFolder.Parent.Should().Be(root);
+        anotherSubFolder.Parent.Should().Be(root);
     }
 
     [Fact]
     public void AddSubFolder_NullSubFolder_ShouldThrow()
     {
-        var folder = new Folder("name");
+        var root = Folder.CreateRoot("root");
 
-        folder.Invoking(_ => _.AddSubFolder(subFolder: null))
+        root.Invoking(_ => _.AddSubFolder(subFolder: null))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
     public void AddFile_EmptyFiles_ShouldAdd()
     {
-        var folder = new Folder("name");
+        var root = Folder.CreateRoot("root");
         var file = new File("file");
 
-        folder.AddFile(file);
+        root.AddFile(file);
 
-        folder.Files.Should().HaveCount(1);
-        folder.Files.Should().Contain(file);
-        file.Parent.Should().Be(folder);
+        root.Files.Should().HaveCount(1);
+        root.Files.Should().Contain(file);
+        file.Parent.Should().Be(root);
     }
 
     [Fact]
     public void AddFile_ManyFiles_ShouldAdd()
     {
-        var folder = new Folder("name");
+        var root = Folder.CreateRoot("root");
         var file = new File("file");
         var anotherFile = new File("any file");
 
-        folder.AddFile(file);
-        folder.AddFile(anotherFile);
+        root.AddFile(file);
+        root.AddFile(anotherFile);
 
-        folder.Files.Should().HaveCount(2);
-        folder.Files.Should().Contain(file);
-        folder.Files.Should().Contain(anotherFile);
-        file.Parent.Should().Be(folder);
-        anotherFile.Parent.Should().Be(folder);
+        root.Files.Should().HaveCount(2);
+        root.Files.Should().Contain(file);
+        root.Files.Should().Contain(anotherFile);
+        file.Parent.Should().Be(root);
+        anotherFile.Parent.Should().Be(root);
     }
 
     [Fact]
     public void AddFile_NullFile_ShouldThrow()
     {
-        var folder = new Folder("name");
+        var root = Folder.CreateRoot("root");
 
-        folder.Invoking(_ => _.AddFile(file: null))
+        root.Invoking(_ => _.AddFile(file: null))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
     public void MoveSubFolder_ValidSubFolder_ShouldMove()
     {
-        var folder = new Folder("name");
-        var subFolder = new Folder("subFolder");
-        folder.AddSubFolder(subFolder);
-        var destination = new Folder("another folder");
+        var root = Folder.CreateRoot("root");
+        var subFolder = new Folder("subFolder", root);
+        root.AddSubFolder(subFolder);
+        var destination = new Folder("another folder", root);
 
-        folder.MoveSubFolder(subFolder, destination);
+        root.MoveSubFolder(subFolder, destination);
 
-        folder.SubFolders.Should().BeEmpty();
+        root.SubFolders.Should().BeEmpty();
         destination.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(destination);
     }
@@ -104,13 +104,13 @@ public class FolderTests
     [Fact]
     public void MoveSubFolder_NotFoundSubFolder_ShouldMove()
     {
-        var folder = new Folder("name");
-        var subFolder = new Folder("subFolder");
-        var destination = new Folder("another folder");
+        var root = Folder.CreateRoot("root");
+        var subFolder = new Folder("subFolder", root);
+        var destination = new Folder("another folder", root);
 
-        folder.MoveSubFolder(subFolder, destination);
+        root.MoveSubFolder(subFolder, destination);
 
-        folder.SubFolders.Should().BeEmpty();
+        root.SubFolders.Should().BeEmpty();
         destination.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(destination);
     }
@@ -118,33 +118,34 @@ public class FolderTests
     [Fact]
     public void MoveSubFolder_ToNullDestination_ShouldThrow()
     {
-        var folder = new Folder("name");
-        var subFolder = new Folder("subFolder");
-        folder.Invoking(_ => _.MoveSubFolder(subFolder, destination: null))
+        var root = Folder.CreateRoot("root");
+        var subFolder = new Folder("subFolder", root);
+
+        root.Invoking(_ => _.MoveSubFolder(subFolder, destination: null))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
     public void MoveSubFolder_NullSubFolder_ShouldThrow()
     {
-        var folder = new Folder("name");
-        var destination = new Folder("destination");
+        var root = Folder.CreateRoot("root");
+        var destination = new Folder("destination", root);
 
-        folder.Invoking(_ => _.MoveSubFolder(subFolder: null, destination))
+        root.Invoking(_ => _.MoveSubFolder(subFolder: null, destination))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
     public void MoveFile_ValidFile_ShouldMove()
     {
-        var folder = new Folder("name");
+        var root = Folder.CreateRoot("root");
         var file = new File("file");
-        folder.AddFile(file);
-        var anotherFolder = new Folder("another folder");
+        root.AddFile(file);
+        var anotherFolder = new Folder("another folder", root);
 
-        folder.MoveFile(file, anotherFolder);
+        root.MoveFile(file, anotherFolder);
 
-        folder.Files.Should().BeEmpty();
+        root.Files.Should().BeEmpty();
         anotherFolder.Files.Should().Contain(file);
         file.Parent.Should().Be(anotherFolder);
     }
@@ -152,13 +153,13 @@ public class FolderTests
     [Fact]
     public void MoveFile_NotFoundFile_ShouldMove()
     {
-        var folder = new Folder("name");
+        var root = Folder.CreateRoot("root");
         var file = new File("file");
-        var anotherFolder = new Folder("another folder");
+        var anotherFolder = new Folder("another folder", root);
 
-        folder.MoveFile(file, anotherFolder);
+        root.MoveFile(file, anotherFolder);
 
-        folder.Files.Should().BeEmpty();
+        root.Files.Should().BeEmpty();
         anotherFolder.Files.Should().Contain(file);
         file.Parent.Should().Be(anotherFolder);
     }
@@ -166,20 +167,20 @@ public class FolderTests
     [Fact]
     public void MoveFile_ToNullDestination_ShouldMove()
     {
-        var folder = new Folder("name");
+        var root = Folder.CreateRoot("root");
         var file = new File("file");
 
-        folder.Invoking(_ => _.MoveFile(file, destination: null))
+        root.Invoking(_ => _.MoveFile(file, destination: null))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
     public void MoveFile_NullFile_ShouldThrow()
     {
-        var folder = new Folder("name");
-        var destination = new Folder("destination");
+        var root = Folder.CreateRoot("root");
+        var destination = new Folder("destination", root);
 
-        folder.Invoking(_ => _.MoveFile(file: null, destination))
+        root.Invoking(_ => _.MoveFile(file: null, destination))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
