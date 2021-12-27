@@ -38,4 +38,12 @@ public class CompanyTests
 
         constructor.Should().ThrowExactly<ArgumentException>();
     }
+
+    [Fact]
+    public void ConstructCompany_NullRoot_ShouldThrow()
+    {
+        var constructor = () => new Company("company", root: null);
+
+        constructor.Should().ThrowExactly<ArgumentNullException>();
+    }
 }
