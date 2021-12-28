@@ -29,8 +29,8 @@ public class FolderTests
     {
         var root = Folder.CreateRoot("company");
         var company = new Company("company", root);
-        var subFolder = new Folder("subFolder", root, company);
-        var anotherSubFolder = new Folder("another subFolder", root, company);
+        var subFolder = new Folder("subFolder", root, new Company("company", root));
+        var anotherSubFolder = new Folder("another subFolder", root, new Company("company", root));
 
         root.AddSubFolder(subFolder);
         root.AddSubFolder(anotherSubFolder);
@@ -40,6 +40,33 @@ public class FolderTests
         root.SubFolders.Should().Contain(anotherSubFolder);
         subFolder.Parent.Should().Be(root);
         anotherSubFolder.Parent.Should().Be(root);
+        root.Company.Should().Be(subFolder.Company);
+        root.Company.Should().Be(anotherSubFolder.Company);
+    }
+
+    [Fact]
+    public void AddSubFolder_CascadingSubFolders_ShouldAdd()
+    {
+        var root1 = Folder.CreateRoot("company 1");
+        var company1 = new Company("company 1", root1);
+        var root2 = Folder.CreateRoot("company 2");
+        var company2 = new Company("company 2", root2);
+        var subFolder1 = new Folder("subFolder 1", root2, company2);
+        var root3 = Folder.CreateRoot("company 3");
+        var company3 = new Company("company 3", root3);
+        var subFolder2 = new Folder("subFolder 2", root3, company3);
+
+        root1.AddSubFolder(subFolder1);
+        subFolder1.AddSubFolder(subFolder2);
+
+        root1.SubFolders.Should().HaveCount(1);
+        root1.SubFolders.Should().Contain(subFolder1);
+        subFolder1.SubFolders.Should().HaveCount(1);
+        subFolder1.SubFolders.Should().Contain(subFolder2);
+        subFolder1.Parent.Should().Be(root1);
+        subFolder2.Parent.Should().Be(subFolder1);
+        root1.Company.Should().Be(subFolder1.Company);
+        root1.Company.Should().Be(subFolder2.Company);
     }
 
     [Fact]
