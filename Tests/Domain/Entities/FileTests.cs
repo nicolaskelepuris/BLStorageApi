@@ -9,10 +9,12 @@ public class FileTests
     [Fact]
     public void ConstructFile_ValidParent_ShouldConstruct()
     {
-        var root = Folder.CreateRoot("root");
-        var file = new File("file", parent: root);
+        var root = Folder.CreateRoot("company");
+        var company = new Company("company", root);
+        var file = new File("file", parent: root, company);
 
         file.Parent.Should().Be(root);
+        file.Company.Should().Be(company);
     }
 
     [Fact]
@@ -28,6 +30,15 @@ public class FileTests
     {
         var root = Folder.CreateRoot("root");
         var file = () => new File(name: null, parent: root);
+
+        file.Should().ThrowExactly<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void ConstructFile_NullCompany_ShouldThrow()
+    {
+        var root = Folder.CreateRoot("root");
+        var file = () => new File("name", parent: root, company: null);
 
         file.Should().ThrowExactly<ArgumentNullException>();
     }
