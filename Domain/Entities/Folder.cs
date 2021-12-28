@@ -77,6 +77,7 @@ public class Folder : BaseEntity
 
         subFolders.Remove(subFolder);
         destination.AddSubFolder(subFolder);
+        subFolder.Company = destination.Company;
     }
 
     public void MoveFile(File file, Folder destination)

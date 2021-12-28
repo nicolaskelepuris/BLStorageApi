@@ -12,14 +12,16 @@ public class FolderTests
     {
         var company = new Company("company");
         var subFolder = new Folder("subFolder", company.Root);
-        var destination = new Folder("another folder", company.Root);
+        var company2 = new Company("company 2");
+        var destination = new Folder("another folder", company2.Root);
 
         company.Root.MoveSubFolder(subFolder, destination);
 
-        company.Root.SubFolders.Should().HaveCount(1);
-        company.Root.SubFolders.Should().Contain(destination);
+        company.Root.SubFolders.Should().BeEmpty();
+        destination.SubFolders.Should().HaveCount(1);
         destination.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(destination);
+        subFolder.Company.Should().Be(destination.Company);
     }
 
     [Fact]
