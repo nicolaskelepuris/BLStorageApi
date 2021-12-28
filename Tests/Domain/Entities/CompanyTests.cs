@@ -14,7 +14,7 @@ public class CompanyTests
         var company = new Company(companyName, root);
 
         company.Root.Should().Be(root);
-        company.Root.Name.Should().Be(company.Name);
+        company.Root.Company.Should().Be(company);
     }
 
     [Fact]

@@ -42,7 +42,7 @@ public class Folder : BaseEntity
     private ICollection<File> files;
 
     public Folder? Parent { get; private set; }
-    public Company? Company { get; private set; }
+    public Company? Company { get; set; }
 
     public void AddSubFolder(Folder subFolder)
     {

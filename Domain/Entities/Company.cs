@@ -11,6 +11,7 @@ public class Company
 
         Name = name;
         Root = root;
+        Root.Company = this;
     }
 
     public string Name { get; }
