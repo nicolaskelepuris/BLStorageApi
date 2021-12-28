@@ -47,4 +47,14 @@ public class CompanyTests
 
         constructor.Should().ThrowExactly<ArgumentNullException>();
     }
+
+    [Fact]
+    public void ConstructCompany_NullName_ShouldThrow()
+    {
+        var root = Folder.CreateRoot("root");
+        
+        var constructor = () => new Company(name: null, root: root);
+
+        constructor.Should().ThrowExactly<ArgumentNullException>();
+    }
 }
