@@ -85,13 +85,15 @@ public class FolderTests
     {
         var root = Folder.CreateRoot("company");
         var company = new Company("company", root);
-        var file = new File("file", parent: root, company);
+        var otherRoot = Folder.CreateRoot("company 2");
+        var file = new File("file", parent: root, new Company("company 2", otherRoot));
 
         root.AddFile(file);
 
         root.Files.Should().HaveCount(1);
         root.Files.Should().Contain(file);
         file.Parent.Should().Be(root);
+        file.Company.Should().Be(root.Company);
     }
 
     [Fact]

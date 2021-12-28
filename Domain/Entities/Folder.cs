@@ -57,8 +57,10 @@ public class Folder : BaseEntity
     public void AddFile(File file)
     {
         ArgumentNullException.ThrowIfNull(file);
+        ArgumentNullException.ThrowIfNull(Company);
 
         file.Parent = this;
+        file.Company = Company;
         files.Add(file);
     }
 
