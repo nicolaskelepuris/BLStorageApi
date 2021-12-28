@@ -20,9 +20,7 @@ public class FileTests
     [Fact]
     public void ConstructFile_NullParent_ShouldThrow()
     {
-        var company = new Company("company");
-
-        var file = () => new File("file", parent: null, company);
+        var file = () => new File("file", parent: null);
 
         file.Should().ThrowExactly<ArgumentNullException>();
     }
@@ -32,16 +30,7 @@ public class FileTests
     {
         var company = new Company("company");
 
-        var file = () => new File(name: null, parent: company.Root, company);
-
-        file.Should().ThrowExactly<ArgumentNullException>();
-    }
-
-    [Fact]
-    public void ConstructFile_NullCompany_ShouldThrow()
-    {
-        var company = new Company("company");
-        var file = () => new File("name", parent: company.Root, company: null);
+        var file = () => new File(name: null, parent: company.Root);
 
         file.Should().ThrowExactly<ArgumentNullException>();
     }
@@ -50,7 +39,7 @@ public class FileTests
     public void MoveTo_Valid_ShouldMoveFile()
     {
         var company = new Company("company");
-        var file = new File("name", company.Root, company);
+        var file = new File("name", company.Root);
         var otherFolder = new Folder("folder", company.Root);
 
         file.MoveTo(otherFolder);

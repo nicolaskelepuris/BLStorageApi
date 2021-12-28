@@ -61,7 +61,7 @@ public class FolderTests
     public void MoveFile_ValidFile_ShouldMove()
     {
         var company = new Company("company");
-        var file = new File("file", company.Root, company);
+        var file = new File("file", company.Root);
         var anotherFolder = new Folder("another folder", company.Root);
 
         file.Parent.MoveFile(file, anotherFolder);
@@ -75,7 +75,7 @@ public class FolderTests
     public void MoveFile_ToNullDestination_ShouldThrow()
     {
         var company = new Company("company");
-        var file = new File("file", parent: company.Root, company);
+        var file = new File("file", parent: company.Root);
 
         company.Root.Invoking(_ => _.MoveFile(file, destination: null))
             .Should().ThrowExactly<ArgumentNullException>();
