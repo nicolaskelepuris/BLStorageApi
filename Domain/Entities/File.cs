@@ -16,6 +16,18 @@ public class File
         Company = company;
     }
 
+    public File(string name, Folder parent)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(parent);
+        ArgumentNullException.ThrowIfNull(parent.Company);
+
+        Name = name;
+        Parent = parent;
+        Company = parent.Company;
+        Parent.MoveFile(this, Parent);
+    }
+
     public string Name { get; }
     public Folder Parent { get; set; }
     public Company Company { get; set; }

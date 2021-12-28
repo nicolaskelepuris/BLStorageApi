@@ -10,7 +10,7 @@ public class FileTests
     public void ConstructFile_ValidParent_ShouldConstruct()
     {
         var company = new Company("company");
-        var file = new File("file", parent: company.Root, company);
+        var file = new File("file", parent: company.Root);
 
         file.Parent.Should().Be(company.Root);
         file.Company.Should().Be(company);
