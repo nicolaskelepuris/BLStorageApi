@@ -75,6 +75,16 @@ public class FolderTests
     }
 
     [Fact]
+    public void AddSubFolder_DuplicateSubFolder_ShouldNotAdd()
+    {
+        var company = new Company("company");
+        var folder = new Folder("folder", company.Root, company);
+        company.Root.AddSubFolder(folder);
+
+        company.Root.SubFolders.Should().HaveCount(1);
+    }
+
+    [Fact]
     public void AddFile_EmptyFiles_ShouldAdd()
     {
         var company1 = new Company("company 1");
@@ -123,12 +133,12 @@ public class FolderTests
     {
         var company = new Company("company");
         var subFolder = new Folder("subFolder", company.Root, company);
-        company.Root.AddSubFolder(subFolder);
         var destination = new Folder("another folder", company.Root, company);
 
         company.Root.MoveSubFolder(subFolder, destination);
 
-        company.Root.SubFolders.Should().BeEmpty();
+        company.Root.SubFolders.Should().HaveCount(1);
+        company.Root.SubFolders.Should().Contain(destination);
         destination.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(destination);
     }
@@ -142,7 +152,8 @@ public class FolderTests
 
         company.Root.MoveSubFolder(subFolder, destination);
 
-        company.Root.SubFolders.Should().BeEmpty();
+        company.Root.SubFolders.Should().HaveCount(1);
+        company.Root.SubFolders.Should().Contain(destination);
         destination.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(destination);
     }
@@ -224,6 +235,7 @@ public class FolderTests
 
         folder.Parent.Should().Be(company.Root);
         folder.Company.Should().Be(company);
+        folder.Parent!.SubFolders.Should().Contain(folder);
     }
 
     [Fact]

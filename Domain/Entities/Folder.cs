@@ -22,6 +22,7 @@ public class Folder : BaseEntity
         ArgumentNullException.ThrowIfNull(parent);
 
         Parent = parent;
+        Parent.AddSubFolder(this);
     }
 
     public static Folder CreateRoot(string name, Company company)
@@ -49,6 +50,7 @@ public class Folder : BaseEntity
     public void AddSubFolder(Folder subFolder)
     {
         ArgumentNullException.ThrowIfNull(subFolder);
+        if (subFolders.Contains(subFolder)) return;
 
         subFolder.Parent = this;
         subFolder.Company = Company;
