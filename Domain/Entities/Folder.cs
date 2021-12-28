@@ -17,14 +17,6 @@ public class Folder : BaseEntity
         files = new List<File>();
     }
 
-    public Folder(string name, Folder parent, Company company) : this(name, company)
-    {
-        ArgumentNullException.ThrowIfNull(parent);
-
-        Parent = parent;
-        Parent.AddSubFolder(this);
-    }
-
     public Folder(string name, Folder parent) : this(name, parent?.Company ?? throw new ArgumentNullException(nameof(parent)))
     {
         ArgumentNullException.ThrowIfNull(parent);
