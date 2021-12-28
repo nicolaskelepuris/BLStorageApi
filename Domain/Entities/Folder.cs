@@ -13,13 +13,6 @@ public class Folder : BaseEntity
         files = new List<File>();
     }
 
-    public Folder(string name, Folder parent) : this(name)
-    {
-        ArgumentNullException.ThrowIfNull(parent);
-
-        Parent = parent;
-    }
-
     public Folder(string name, Folder parent, Company company) : this(name)
     {
         ArgumentNullException.ThrowIfNull(parent);

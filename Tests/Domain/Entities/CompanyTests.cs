@@ -21,8 +21,9 @@ public class CompanyTests
     public void ConstructCompany_NotValidRootNotARoot_ShouldThrow()
     {
         var companyName = "company";
-        var root = Folder.CreateRoot("root");
-        var notARoot = new Folder(companyName, root);
+        var root = Folder.CreateRoot("company");
+        var company = new Company("company", root);
+        var notARoot = new Folder(companyName, root, company);
 
         var constructor = () => new Company(companyName, notARoot);
 
