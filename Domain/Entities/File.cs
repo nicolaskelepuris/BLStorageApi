@@ -12,6 +12,7 @@ public class File
         
         Name = name;
         Parent = parent;
+        Parent.AddFile(this);
         Company = company;
     }
 

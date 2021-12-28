@@ -129,6 +129,18 @@ public class FolderTests
     }
 
     [Fact]
+    public void AddFile_DuplicateFile_ShouldNotAdd()
+    {
+        var company1 = new Company("company 1");
+        var file = new File("file", parent: company1.Root, company1);
+
+        company1.Root.AddFile(file);
+
+        company1.Root.Files.Should().HaveCount(1);
+        company1.Root.Files.Should().Contain(file);
+    }
+
+    [Fact]
     public void MoveSubFolder_ValidSubFolder_ShouldMove()
     {
         var company = new Company("company");

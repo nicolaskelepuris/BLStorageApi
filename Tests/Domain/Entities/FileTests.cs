@@ -14,6 +14,7 @@ public class FileTests
 
         file.Parent.Should().Be(company.Root);
         file.Company.Should().Be(company);
+        file.Parent.Files.Should().Contain(file);
     }
 
     [Fact]

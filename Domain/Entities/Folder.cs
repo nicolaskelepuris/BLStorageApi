@@ -61,6 +61,7 @@ public class Folder : BaseEntity
     {
         ArgumentNullException.ThrowIfNull(file);
         ArgumentNullException.ThrowIfNull(Company);
+        if (files.Contains(file)) return;
 
         file.Parent = this;
         file.Company = Company;
