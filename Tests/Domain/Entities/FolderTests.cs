@@ -187,10 +187,12 @@ public class FolderTests
     [Fact]
     public void ConstructFolder_ValidParent_ShouldConstruct()
     {
-        var root = Folder.CreateRoot("root");
-        var folder = new Folder("name", parent: root);
+        var root = Folder.CreateRoot("company");
+        var company = new Company("company", root);
+        var folder = new Folder("name", parent: root, company: company);
 
         folder.Parent.Should().Be(root);
+        folder.Company.Should().Be(company);
     }
 
     [Fact]

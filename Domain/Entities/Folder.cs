@@ -20,6 +20,14 @@ public class Folder : BaseEntity
         Parent = parent;
     }
 
+    public Folder(string name, Folder parent, Company company) : this(name)
+    {
+        ArgumentNullException.ThrowIfNull(parent);
+
+        Parent = parent;
+        Company = company;
+    }
+
     public static Folder CreateRoot(string name)
     {
         return new Folder(name);
@@ -40,6 +48,7 @@ public class Folder : BaseEntity
     private ICollection<File> files;
 
     public Folder? Parent { get; private set; }
+    public Company? Company { get; private set; }
 
     public void AddSubFolder(Folder subFolder)
     {
