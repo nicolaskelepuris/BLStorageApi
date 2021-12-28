@@ -10,65 +10,59 @@ public class FolderTests
     [Fact]
     public void AddSubFolder_EmptySubFolders_ShouldAdd()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var anotherRoot = Folder.CreateRoot("another company");
-        var anotherCompany = new Company("another company", anotherRoot);
-        var subFolder = new Folder("subFolder", anotherRoot, anotherCompany);
+        var company1 = new Company("company 1");
+        var company2 = new Company("company 2");
+        var subFolder = new Folder("subFolder", company2.Root, company2);
 
-        root.AddSubFolder(subFolder);
+        company1.Root.AddSubFolder(subFolder);
 
-        root.SubFolders.Should().HaveCount(1);
-        root.SubFolders.Should().Contain(subFolder);
-        subFolder.Parent.Should().Be(root);
-        root.Company.Should().Be(subFolder.Company);
+        company1.Root.SubFolders.Should().HaveCount(1);
+        company1.Root.SubFolders.Should().Contain(subFolder);
+        subFolder.Company.Should().Be(company1);
+        subFolder.Parent.Should().Be(company1.Root);
     }
 
     [Fact]
     public void AddSubFolder_ManySubFolders_ShouldAdd()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var otherRoot = Folder.CreateRoot("company 2");
-        var subFolder = new Folder("subFolder", otherRoot, new Company("company 2", otherRoot));
-        var anotherRoot = Folder.CreateRoot("company 3");
-        var anotherSubFolder = new Folder("another subFolder", anotherRoot, new Company("company 3", anotherRoot));
+        var company1 = new Company("company 1");
+        var company2 = new Company("company 2");
+        var subFolder = new Folder("subFolder", company2.Root, company2);
+        var company3 = new Company("company 3");
+        var anotherSubFolder = new Folder("another subFolder", company3.Root, company3);
 
-        root.AddSubFolder(subFolder);
-        root.AddSubFolder(anotherSubFolder);
+        company1.Root.AddSubFolder(subFolder);
+        company1.Root.AddSubFolder(anotherSubFolder);
 
-        root.SubFolders.Should().HaveCount(2);
-        root.SubFolders.Should().Contain(subFolder);
-        root.SubFolders.Should().Contain(anotherSubFolder);
-        subFolder.Parent.Should().Be(root);
-        anotherSubFolder.Parent.Should().Be(root);
-        root.Company.Should().Be(subFolder.Company);
-        root.Company.Should().Be(anotherSubFolder.Company);
+        company1.Root.SubFolders.Should().HaveCount(2);
+        company1.Root.SubFolders.Should().Contain(subFolder);
+        company1.Root.SubFolders.Should().Contain(anotherSubFolder);
+        subFolder.Parent.Should().Be(company1.Root);
+        anotherSubFolder.Parent.Should().Be(company1.Root);
+        subFolder.Company.Should().Be(company1);
+        anotherSubFolder.Company.Should().Be(company1);
     }
 
     [Fact]
     public void AddSubFolder_CascadingSubFolders_ShouldAdd()
     {
-        var root1 = Folder.CreateRoot("company 1");
-        var company1 = new Company("company 1", root1);
-        var root2 = Folder.CreateRoot("company 2");
-        var company2 = new Company("company 2", root2);
-        var subFolder1 = new Folder("subFolder 1", root2, company2);
-        var root3 = Folder.CreateRoot("company 3");
-        var company3 = new Company("company 3", root3);
-        var subFolder2 = new Folder("subFolder 2", root3, company3);
+        var company1 = new Company("company 1");
+        var company2 = new Company("company 2");
+        var subFolder1 = new Folder("subFolder 1", company2.Root, company2);
+        var company3 = new Company("company 3");
+        var subFolder2 = new Folder("subFolder 2", company3.Root, company3);
 
-        root1.AddSubFolder(subFolder1);
+        company1.Root.AddSubFolder(subFolder1);
         subFolder1.AddSubFolder(subFolder2);
 
-        root1.SubFolders.Should().HaveCount(1);
-        root1.SubFolders.Should().Contain(subFolder1);
+        company1.Root.SubFolders.Should().HaveCount(1);
+        company1.Root.SubFolders.Should().Contain(subFolder1);
         subFolder1.SubFolders.Should().HaveCount(1);
         subFolder1.SubFolders.Should().Contain(subFolder2);
-        subFolder1.Parent.Should().Be(root1);
+        subFolder1.Parent.Should().Be(company1.Root);
         subFolder2.Parent.Should().Be(subFolder1);
-        root1.Company.Should().Be(subFolder1.Company);
-        root1.Company.Should().Be(subFolder2.Company);
+        subFolder1.Company.Should().Be(company1);
+        subFolder2.Company.Should().Be(company1);
     }
 
     [Fact]
@@ -83,35 +77,36 @@ public class FolderTests
     [Fact]
     public void AddFile_EmptyFiles_ShouldAdd()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var otherRoot = Folder.CreateRoot("company 2");
-        var file = new File("file", parent: root, new Company("company 2", otherRoot));
+        var company1 = new Company("company 1");
+        var company2 = new Company("company 2");
+        var file = new File("file", parent: company2.Root, company2);
 
-        root.AddFile(file);
+        company1.Root.AddFile(file);
 
-        root.Files.Should().HaveCount(1);
-        root.Files.Should().Contain(file);
-        file.Parent.Should().Be(root);
-        file.Company.Should().Be(root.Company);
+        company1.Root.Files.Should().HaveCount(1);
+        company1.Root.Files.Should().Contain(file);
+        file.Parent.Should().Be(company1.Root);
+        file.Company.Should().Be(company1);
     }
 
     [Fact]
     public void AddFile_ManyFiles_ShouldAdd()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var file = new File("file", parent: root, company);
-        var anotherFile = new File("any file", parent: root, company);
+        var company1 = new Company("company 1");
+        var file = new File("file", parent: company1.Root, company1);
+        var company2 = new Company("company 2");
+        var anotherFile = new File("any file", parent: company2.Root, company2);
 
-        root.AddFile(file);
-        root.AddFile(anotherFile);
+        company1.Root.AddFile(file);
+        company1.Root.AddFile(anotherFile);
 
-        root.Files.Should().HaveCount(2);
-        root.Files.Should().Contain(file);
-        root.Files.Should().Contain(anotherFile);
-        file.Parent.Should().Be(root);
-        anotherFile.Parent.Should().Be(root);
+        company1.Root.Files.Should().HaveCount(2);
+        company1.Root.Files.Should().Contain(file);
+        company1.Root.Files.Should().Contain(anotherFile);
+        file.Parent.Should().Be(company1.Root);
+        anotherFile.Parent.Should().Be(company1.Root);
+        file.Company.Should().Be(company1);
+        anotherFile.Company.Should().Be(company1);
     }
 
     [Fact]
@@ -126,15 +121,14 @@ public class FolderTests
     [Fact]
     public void MoveSubFolder_ValidSubFolder_ShouldMove()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var subFolder = new Folder("subFolder", root, company);
-        root.AddSubFolder(subFolder);
-        var destination = new Folder("another folder", root, company);
+        var company = new Company("company");
+        var subFolder = new Folder("subFolder", company.Root, company);
+        company.Root.AddSubFolder(subFolder);
+        var destination = new Folder("another folder", company.Root, company);
 
-        root.MoveSubFolder(subFolder, destination);
+        company.Root.MoveSubFolder(subFolder, destination);
 
-        root.SubFolders.Should().BeEmpty();
+        company.Root.SubFolders.Should().BeEmpty();
         destination.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(destination);
     }
@@ -142,14 +136,13 @@ public class FolderTests
     [Fact]
     public void MoveSubFolder_NotFoundSubFolder_ShouldMove()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var subFolder = new Folder("subFolder", root, company);
-        var destination = new Folder("another folder", root, company);
+        var company = new Company("company");
+        var subFolder = new Folder("subFolder", company.Root, company);
+        var destination = new Folder("another folder", company.Root, company);
 
-        root.MoveSubFolder(subFolder, destination);
+        company.Root.MoveSubFolder(subFolder, destination);
 
-        root.SubFolders.Should().BeEmpty();
+        company.Root.SubFolders.Should().BeEmpty();
         destination.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(destination);
     }
@@ -157,37 +150,34 @@ public class FolderTests
     [Fact]
     public void MoveSubFolder_ToNullDestination_ShouldThrow()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var subFolder = new Folder("subFolder", root, company);
+        var company = new Company("company");
+        var subFolder = new Folder("subFolder", company.Root, company);
 
-        root.Invoking(_ => _.MoveSubFolder(subFolder, destination: null))
+        company.Root.Invoking(_ => _.MoveSubFolder(subFolder, destination: null))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
     public void MoveSubFolder_NullSubFolder_ShouldThrow()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var destination = new Folder("destination", root, company);
+        var company = new Company("company");
+        var destination = new Folder("destination", company.Root, company);
 
-        root.Invoking(_ => _.MoveSubFolder(subFolder: null, destination))
+        company.Root.Invoking(_ => _.MoveSubFolder(subFolder: null, destination))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
     public void MoveFile_ValidFile_ShouldMove()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var file = new File("file", root, company);
-        root.AddFile(file);
-        var anotherFolder = new Folder("another folder", root, company);
+        var company = new Company("company");
+        var file = new File("file", company.Root, company);
+        company.Root.AddFile(file);
+        var anotherFolder = new Folder("another folder", company.Root, company);
 
-        root.MoveFile(file, anotherFolder);
+        company.Root.MoveFile(file, anotherFolder);
 
-        root.Files.Should().BeEmpty();
+        company.Root.Files.Should().BeEmpty();
         anotherFolder.Files.Should().Contain(file);
         file.Parent.Should().Be(anotherFolder);
     }
@@ -195,14 +185,13 @@ public class FolderTests
     [Fact]
     public void MoveFile_NotFoundFile_ShouldMove()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var file = new File("file", root, company);
-        var anotherFolder = new Folder("another folder", root, company);
+        var company = new Company("company");
+        var file = new File("file", company.Root, company);
+        var anotherFolder = new Folder("another folder", company.Root, company);
 
-        root.MoveFile(file, anotherFolder);
+        company.Root.MoveFile(file, anotherFolder);
 
-        root.Files.Should().BeEmpty();
+        company.Root.Files.Should().BeEmpty();
         anotherFolder.Files.Should().Contain(file);
         file.Parent.Should().Be(anotherFolder);
     }
@@ -210,41 +199,37 @@ public class FolderTests
     [Fact]
     public void MoveFile_ToNullDestination_ShouldMove()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var file = new File("file", parent: root, company);
+        var company = new Company("company");
+        var file = new File("file", parent: company.Root, company);
 
-        root.Invoking(_ => _.MoveFile(file, destination: null))
+        company.Root.Invoking(_ => _.MoveFile(file, destination: null))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
     public void MoveFile_NullFile_ShouldThrow()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var destination = new Folder("destination", parent: root, company);
+        var company = new Company("company");
+        var destination = new Folder("destination", parent: company.Root, company);
 
-        root.Invoking(_ => _.MoveFile(file: null, destination))
+        company.Root.Invoking(_ => _.MoveFile(file: null, destination))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
     public void ConstructFolder_ValidParent_ShouldConstruct()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var folder = new Folder("name", parent: root, company);
+        var company = new Company("company");
+        var folder = new Folder("name", parent: company.Root, company);
 
-        folder.Parent.Should().Be(root);
+        folder.Parent.Should().Be(company.Root);
         folder.Company.Should().Be(company);
     }
 
     [Fact]
     public void ConstructFolder_NullParent_ShouldThrow()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
+        var company = new Company("company");
         var folder = () => new Folder("name", parent: null, company);
 
         folder.Should().ThrowExactly<ArgumentNullException>();
@@ -262,9 +247,8 @@ public class FolderTests
     [Fact]
     public void ConstructFolder_NullName_ShouldThrow()
     {
-        var root = Folder.CreateRoot("company");
-        var company = new Company("company", root);
-        var folder = () => new Folder(name: null, parent: root, company);
+        var company = new Company("company");
+        var folder = () => new Folder(name: null, parent: company.Root, company);
 
         folder.Should().ThrowExactly<ArgumentNullException>();
     }
