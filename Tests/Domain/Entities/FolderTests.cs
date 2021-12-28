@@ -25,21 +25,6 @@ public class FolderTests
     }
 
     [Fact]
-    public void MoveSubFolder_NotFoundSubFolder_ShouldMove()
-    {
-        var company = new Company("company");
-        var subFolder = new Folder("subFolder", company.Root);
-        var destination = new Folder("another folder", company.Root);
-
-        company.Root.MoveSubFolder(subFolder, destination);
-
-        company.Root.SubFolders.Should().HaveCount(1);
-        company.Root.SubFolders.Should().Contain(destination);
-        destination.SubFolders.Should().Contain(subFolder);
-        subFolder.Parent.Should().Be(destination);
-    }
-
-    [Fact]
     public void MoveSubFolder_ToNullDestination_ShouldThrow()
     {
         var company = new Company("company");
