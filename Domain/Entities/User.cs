@@ -5,6 +5,7 @@ public class User
 {
     public User(string id, Company company, string email, string userName)
     {
+        ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(company);
         ArgumentNullException.ThrowIfNull(email);
         ArgumentNullException.ThrowIfNull(userName);
