@@ -39,8 +39,8 @@ public class FileTests
     [Fact]
     public void ConstructFile_NullCompany_ShouldThrow()
     {
-        var root = Folder.CreateRoot("root");
-        var file = () => new File("name", parent: root, company: null);
+        var company = new Company("company");
+        var file = () => new File("name", parent: company.Root, company: null);
 
         file.Should().ThrowExactly<ArgumentNullException>();
     }

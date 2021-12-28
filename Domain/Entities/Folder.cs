@@ -17,23 +17,11 @@ public class Folder : BaseEntity
         files = new List<File>();
     }
 
-    private Folder(string name)
-    {
-        Name = name;
-        subFolders = new List<Folder>();
-        files = new List<File>();
-    }
-
     public Folder(string name, Folder parent, Company company) : this(name, company)
     {
         ArgumentNullException.ThrowIfNull(parent);
 
         Parent = parent;
-    }
-
-    public static Folder CreateRoot(string name)
-    {
-        return new Folder(name);
     }
 
     public static Folder CreateRoot(string name, Company company)

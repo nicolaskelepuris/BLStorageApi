@@ -68,9 +68,9 @@ public class FolderTests
     [Fact]
     public void AddSubFolder_NullSubFolder_ShouldThrow()
     {
-        var root = Folder.CreateRoot("root");
+        var company = new Company("company");
 
-        root.Invoking(_ => _.AddSubFolder(subFolder: null))
+        company.Root.Invoking(_ => _.AddSubFolder(subFolder: null))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
@@ -112,9 +112,9 @@ public class FolderTests
     [Fact]
     public void AddFile_NullFile_ShouldThrow()
     {
-        var root = Folder.CreateRoot("root");
+        var company = new Company("company");
 
-        root.Invoking(_ => _.AddFile(file: null))
+        company.Root.Invoking(_ => _.AddFile(file: null))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
@@ -238,8 +238,8 @@ public class FolderTests
     [Fact]
     public void ConstructFolder_NullCompany_ShouldThrow()
     {
-        var root = Folder.CreateRoot("root");
-        var folder = () => new Folder("name", parent: root, company: null);
+        var company = new Company("company");
+        var folder = () => new Folder("name", parent: company.Root, company: null);
 
         folder.Should().ThrowExactly<ArgumentNullException>();
     }
