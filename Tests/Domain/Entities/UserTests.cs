@@ -34,4 +34,13 @@ public class UserTests
 
         user.Should().ThrowExactly<ArgumentNullException>();
     }
+
+    [Fact]
+    public void UserConstructor_NullUserName_ShouldThrow()
+    {
+        var company = new Company("company");
+        var user = () => new User(company, "email", userName: null);
+
+        user.Should().ThrowExactly<ArgumentNullException>();
+    }
 }

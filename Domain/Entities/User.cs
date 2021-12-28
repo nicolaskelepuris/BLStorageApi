@@ -7,6 +7,7 @@ public class User
     {
         ArgumentNullException.ThrowIfNull(company);
         ArgumentNullException.ThrowIfNull(email);
+        ArgumentNullException.ThrowIfNull(userName);
 
         Company = company;
         Email = email;
