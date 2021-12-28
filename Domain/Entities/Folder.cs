@@ -25,6 +25,15 @@ public class Folder : BaseEntity
         Parent.AddSubFolder(this);
     }
 
+    public Folder(string name, Folder parent) : this(name, parent?.Company ?? throw new ArgumentNullException(nameof(parent)))
+    {
+        ArgumentNullException.ThrowIfNull(parent);
+        ArgumentNullException.ThrowIfNull(parent.Company);
+
+        Parent = parent;
+        Parent.AddSubFolder(this);
+    }
+
     public static Folder CreateRoot(string name, Company company)
     {
         return new Folder(name, company);

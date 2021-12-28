@@ -240,10 +240,10 @@ public class FolderTests
     }
 
     [Fact]
-    public void ConstructFolder_ValidParent_ShouldConstruct()
+    public void ConstructFolder_Valid_ShouldConstruct()
     {
         var company = new Company("company");
-        var folder = new Folder("name", parent: company.Root, company);
+        var folder = new Folder("name", parent: company.Root);
 
         folder.Parent.Should().Be(company.Root);
         folder.Company.Should().Be(company);
@@ -253,17 +253,7 @@ public class FolderTests
     [Fact]
     public void ConstructFolder_NullParent_ShouldThrow()
     {
-        var company = new Company("company");
-        var folder = () => new Folder("name", parent: null, company);
-
-        folder.Should().ThrowExactly<ArgumentNullException>();
-    }    
-
-    [Fact]
-    public void ConstructFolder_NullCompany_ShouldThrow()
-    {
-        var company = new Company("company");
-        var folder = () => new Folder("name", parent: company.Root, company: null);
+        var folder = () => new Folder("name", parent: null);
 
         folder.Should().ThrowExactly<ArgumentNullException>();
     }
@@ -272,7 +262,7 @@ public class FolderTests
     public void ConstructFolder_NullName_ShouldThrow()
     {
         var company = new Company("company");
-        var folder = () => new Folder(name: null, parent: company.Root, company);
+        var folder = () => new Folder(name: null, parent: company.Root);
 
         folder.Should().ThrowExactly<ArgumentNullException>();
     }
