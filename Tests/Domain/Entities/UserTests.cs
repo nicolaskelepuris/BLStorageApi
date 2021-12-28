@@ -11,17 +11,18 @@ public class UserTests
     {
         var company = new Company("company");
 
-        var user = new User(company, "email", "userName");
+        var user = new User("id", company, "email", "userName");
 
         user.Company.Should().Be(company);
         user.Email.Should().Be("email");
         user.UserName.Should().Be("userName");
+        user.Id.Should().Be("id");
     }
 
     [Fact]
     public void UserConstructor_NullCompany_ShouldThrow()
     {
-        var user = () => new User(company: null, "email", "userName");
+        var user = () => new User("id", company: null, "email", "userName");
 
         user.Should().ThrowExactly<ArgumentNullException>();
     }
@@ -30,7 +31,7 @@ public class UserTests
     public void UserConstructor_NullEmail_ShouldThrow()
     {
         var company = new Company("company");
-        var user = () => new User(company, email: null, "userName");
+        var user = () => new User("id", company, email: null, "userName");
 
         user.Should().ThrowExactly<ArgumentNullException>();
     }
@@ -39,7 +40,7 @@ public class UserTests
     public void UserConstructor_NullUserName_ShouldThrow()
     {
         var company = new Company("company");
-        var user = () => new User(company, "email", userName: null);
+        var user = () => new User("id", company, "email", userName: null);
 
         user.Should().ThrowExactly<ArgumentNullException>();
     }
