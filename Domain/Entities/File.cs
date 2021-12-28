@@ -9,7 +9,7 @@ public class File
         ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(parent);
         ArgumentNullException.ThrowIfNull(company);
-        
+
         Name = name;
         Parent = parent;
         Parent.MoveFile(this, Parent);
@@ -19,4 +19,9 @@ public class File
     public string Name { get; }
     public Folder Parent { get; set; }
     public Company Company { get; set; }
+
+    public void MoveTo(Folder destination)
+    {
+        Parent.MoveFile(this, destination);
+    }
 }

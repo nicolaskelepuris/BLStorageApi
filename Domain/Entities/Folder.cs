@@ -73,6 +73,7 @@ public class Folder : BaseEntity
     {
         ArgumentNullException.ThrowIfNull(subFolder);
         ArgumentNullException.ThrowIfNull(destination);
+        if (this == destination) return;
 
         subFolders.Remove(subFolder);
         destination.AddSubFolder(subFolder);

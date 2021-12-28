@@ -45,4 +45,19 @@ public class FileTests
 
         file.Should().ThrowExactly<ArgumentNullException>();
     }
+
+    [Fact]
+    public void MoveTo_Valid_ShouldMoveFile()
+    {
+        var company = new Company("company");
+        var file = new File("name", company.Root, company);
+        var otherFolder = new Folder("folder", company.Root);
+
+        file.MoveTo(otherFolder);
+
+        file.Parent.Should().Be(otherFolder);
+        otherFolder.Files.Should().HaveCount(1);
+        otherFolder.Files.Should().Contain(file);
+        company.Root.Files.Should().BeEmpty();
+    }
 }
