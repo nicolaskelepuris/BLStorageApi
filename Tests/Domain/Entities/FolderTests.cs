@@ -8,62 +8,6 @@ namespace Tests.Domain.Entities;
 public class FolderTests
 {
     [Fact]
-    public void AddFile_EmptyFiles_ShouldAdd()
-    {
-        var company1 = new Company("company 1");
-        var company2 = new Company("company 2");
-        var file = new File("file", parent: company2.Root, company2);
-
-        company1.Root.AddFile(file);
-
-        company1.Root.Files.Should().HaveCount(1);
-        company1.Root.Files.Should().Contain(file);
-        file.Parent.Should().Be(company1.Root);
-        file.Company.Should().Be(company1);
-    }
-
-    [Fact]
-    public void AddFile_ManyFiles_ShouldAdd()
-    {
-        var company1 = new Company("company 1");
-        var file = new File("file", parent: company1.Root, company1);
-        var company2 = new Company("company 2");
-        var anotherFile = new File("any file", parent: company2.Root, company2);
-
-        company1.Root.AddFile(file);
-        company1.Root.AddFile(anotherFile);
-
-        company1.Root.Files.Should().HaveCount(2);
-        company1.Root.Files.Should().Contain(file);
-        company1.Root.Files.Should().Contain(anotherFile);
-        file.Parent.Should().Be(company1.Root);
-        anotherFile.Parent.Should().Be(company1.Root);
-        file.Company.Should().Be(company1);
-        anotherFile.Company.Should().Be(company1);
-    }
-
-    [Fact]
-    public void AddFile_NullFile_ShouldThrow()
-    {
-        var company = new Company("company");
-
-        company.Root.Invoking(_ => _.AddFile(file: null))
-            .Should().ThrowExactly<ArgumentNullException>();
-    }
-
-    [Fact]
-    public void AddFile_DuplicateFile_ShouldNotAdd()
-    {
-        var company1 = new Company("company 1");
-        var file = new File("file", parent: company1.Root, company1);
-
-        company1.Root.AddFile(file);
-
-        company1.Root.Files.Should().HaveCount(1);
-        company1.Root.Files.Should().Contain(file);
-    }
-
-    [Fact]
     public void MoveSubFolder_ValidSubFolder_ShouldMove()
     {
         var company = new Company("company");
@@ -118,10 +62,9 @@ public class FolderTests
     {
         var company = new Company("company");
         var file = new File("file", company.Root, company);
-        company.Root.AddFile(file);
         var anotherFolder = new Folder("another folder", company.Root);
 
-        company.Root.MoveFile(file, anotherFolder);
+        file.Parent.MoveFile(file, anotherFolder);
 
         company.Root.Files.Should().BeEmpty();
         anotherFolder.Files.Should().Contain(file);
@@ -129,21 +72,7 @@ public class FolderTests
     }
 
     [Fact]
-    public void MoveFile_NotFoundFile_ShouldMove()
-    {
-        var company = new Company("company");
-        var file = new File("file", company.Root, company);
-        var anotherFolder = new Folder("another folder", company.Root);
-
-        company.Root.MoveFile(file, anotherFolder);
-
-        company.Root.Files.Should().BeEmpty();
-        anotherFolder.Files.Should().Contain(file);
-        file.Parent.Should().Be(anotherFolder);
-    }
-
-    [Fact]
-    public void MoveFile_ToNullDestination_ShouldMove()
+    public void MoveFile_ToNullDestination_ShouldThrow()
     {
         var company = new Company("company");
         var file = new File("file", parent: company.Root, company);

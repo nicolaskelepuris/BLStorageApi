@@ -58,7 +58,7 @@ public class Folder : BaseEntity
         subFolders.Add(subFolder);
     }
 
-    public void AddFile(File file)
+    private void AddFile(File file)
     {
         ArgumentNullException.ThrowIfNull(file);
         ArgumentNullException.ThrowIfNull(Company);
