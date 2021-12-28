@@ -20,7 +20,10 @@ public class FileTests
     [Fact]
     public void ConstructFile_NullParent_ShouldThrow()
     {
-        var file = () => new File("file", parent: null);
+        var root = Folder.CreateRoot("company");
+        var company = new Company("company", root);
+
+        var file = () => new File("file", parent: null, company);
 
         file.Should().ThrowExactly<ArgumentNullException>();
     }
@@ -28,8 +31,10 @@ public class FileTests
     [Fact]
     public void ConstructFile_NullName_ShouldThrow()
     {
-        var root = Folder.CreateRoot("root");
-        var file = () => new File(name: null, parent: root);
+        var root = Folder.CreateRoot("company");
+        var company = new Company("company", root);
+
+        var file = () => new File(name: null, parent: root, company);
 
         file.Should().ThrowExactly<ArgumentNullException>();
     }

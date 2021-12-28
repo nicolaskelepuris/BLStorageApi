@@ -4,15 +4,6 @@ namespace Domain.Entities;
 
 public class File
 {
-    public File(string name, Folder parent)
-    {
-        ArgumentNullException.ThrowIfNull(name);
-        ArgumentNullException.ThrowIfNull(parent);
-        
-        Name = name;
-        Parent = parent;
-    }
-
     public File(string name, Folder parent, Company company)
     {
         ArgumentNullException.ThrowIfNull(name);
