@@ -29,8 +29,10 @@ public class FolderTests
     {
         var root = Folder.CreateRoot("company");
         var company = new Company("company", root);
-        var subFolder = new Folder("subFolder", root, new Company("company", root));
-        var anotherSubFolder = new Folder("another subFolder", root, new Company("company", root));
+        var otherRoot = Folder.CreateRoot("company 2");
+        var subFolder = new Folder("subFolder", otherRoot, new Company("company 2", otherRoot));
+        var anotherRoot = Folder.CreateRoot("company 3");
+        var anotherSubFolder = new Folder("another subFolder", anotherRoot, new Company("company 3", anotherRoot));
 
         root.AddSubFolder(subFolder);
         root.AddSubFolder(anotherSubFolder);
