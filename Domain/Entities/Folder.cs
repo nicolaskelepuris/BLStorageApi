@@ -15,6 +15,7 @@ public class Folder : BaseEntity
 
     public Folder(string name, Folder parent, Company company) : this(name)
     {
+        ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(parent);
         ArgumentNullException.ThrowIfNull(company);
 

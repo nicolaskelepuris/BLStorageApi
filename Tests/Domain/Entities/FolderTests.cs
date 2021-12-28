@@ -221,4 +221,14 @@ public class FolderTests
 
         folder.Should().ThrowExactly<ArgumentNullException>();
     }
+
+    [Fact]
+    public void ConstructFolder_NullName_ShouldThrow()
+    {
+        var root = Folder.CreateRoot("company");
+        var company = new Company("company", root);
+        var folder = () => new Folder(name: null, parent: root, company);
+
+        folder.Should().ThrowExactly<ArgumentNullException>();
+    }
 }
