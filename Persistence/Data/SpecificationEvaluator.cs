@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Domain.Entities.Base;
 using Domain.Interfaces;
@@ -9,6 +10,9 @@ public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
     private readonly ISpecification<TEntity> _specification;
     public SpecificationEvaluator(IQueryable<TEntity> query, ISpecification<TEntity> specification)
     {
+        ArgumentNullException.ThrowIfNull(query);
+        ArgumentNullException.ThrowIfNull(specification);
+
         this.query = query;
         _specification = specification;
     }    

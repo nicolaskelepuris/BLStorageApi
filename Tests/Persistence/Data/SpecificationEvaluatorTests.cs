@@ -45,4 +45,24 @@ public class SpecificationEvaluatorTests
 
         evaluator.Should().NotThrow();
     }
+
+    [Fact]
+    public void Construct_NullQuery_ShouldThrow()
+    {
+        var specification = new Specification();
+
+        var evaluator = () => new SpecificationEvaluator<SomeEntity>(query: null, specification);
+
+        evaluator.Should().ThrowExactly<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void Construct_NullSpecification_ShouldThrow()
+    {
+        var query = new List<SomeEntity>().AsQueryable();
+
+        var evaluator = () => new SpecificationEvaluator<SomeEntity>(query, specification: null);
+
+        evaluator.Should().ThrowExactly<ArgumentNullException>();
+    }
 }
