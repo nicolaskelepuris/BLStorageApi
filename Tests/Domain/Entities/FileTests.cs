@@ -22,4 +22,13 @@ public class FileTests
 
         file.Should().ThrowExactly<ArgumentNullException>();
     }
+
+    [Fact]
+    public void ConstructFile_NullName_ShouldThrow()
+    {
+        var root = Folder.CreateRoot("root");
+        var file = () => new File(name: null, parent: root);
+
+        file.Should().ThrowExactly<ArgumentNullException>();
+    }
 }
