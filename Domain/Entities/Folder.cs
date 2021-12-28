@@ -6,6 +6,17 @@ namespace Domain.Entities;
 
 public class Folder : BaseEntity
 {
+    private Folder(string name, Company company)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(company);
+
+        Name = name;
+        Company = company;
+        subFolders = new List<Folder>();
+        files = new List<File>();
+    }
+
     private Folder(string name)
     {
         Name = name;
@@ -13,19 +24,21 @@ public class Folder : BaseEntity
         files = new List<File>();
     }
 
-    public Folder(string name, Folder parent, Company company) : this(name)
+    public Folder(string name, Folder parent, Company company) : this(name, company)
     {
-        ArgumentNullException.ThrowIfNull(name);
         ArgumentNullException.ThrowIfNull(parent);
-        ArgumentNullException.ThrowIfNull(company);
 
         Parent = parent;
-        Company = company;
     }
 
     public static Folder CreateRoot(string name)
     {
         return new Folder(name);
+    }
+
+    public static Folder CreateRoot(string name, Company company)
+    {
+        return new Folder(name, company);
     }
 
     public string Name { get; }
@@ -43,7 +56,7 @@ public class Folder : BaseEntity
     private ICollection<File> files;
 
     public Folder? Parent { get; private set; }
-    public Company? Company { get; set; }
+    public Company Company { get; set; }
 
     public void AddSubFolder(Folder subFolder)
     {

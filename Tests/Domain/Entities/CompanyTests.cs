@@ -7,13 +7,11 @@ namespace Tests.Domain.Entities;
 public class CompanyTests
 {
     [Fact]
-    public void ConstructCompany_ValidRoot_ShouldConstruct()
+    public void ConstructCompany_Valid_ShouldConstruct()
     {
-        var companyName = "company";
-        var root = Folder.CreateRoot(companyName);
-        var company = new Company(companyName, root);
+        var company = new Company("name");
 
-        company.Root.Should().Be(root);
+        company.Root.Should().NotBeNull();
         company.Root.Company.Should().Be(company);
     }
 

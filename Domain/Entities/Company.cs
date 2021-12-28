@@ -15,6 +15,14 @@ public class Company
         Root.Company = this;
     }
 
+    public Company(string name)
+    {
+        ArgumentNullException.ThrowIfNull(name);
+
+        Name = name;
+        Root = Folder.CreateRoot(name, this);
+    }
+
     public string Name { get; }
     public Folder Root { get; private set; }
 }
