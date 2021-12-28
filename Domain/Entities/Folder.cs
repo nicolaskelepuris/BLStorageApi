@@ -48,7 +48,7 @@ public class Folder : BaseEntity
     public Folder? Parent { get; private set; }
     public Company Company { get; set; }
 
-    public void AddSubFolder(Folder subFolder)
+    private void AddSubFolder(Folder subFolder)
     {
         ArgumentNullException.ThrowIfNull(subFolder);
         if (subFolders.Contains(subFolder)) return;
