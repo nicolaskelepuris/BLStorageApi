@@ -49,13 +49,15 @@ public class FolderTests
     {
         var company = new Company("company");
         var file = new File("file", company.Root);
-        var anotherFolder = new Folder("another folder", company.Root);
+        var company2 = new Company("company 2");
+        var anotherFolder = new Folder("another folder", company2.Root);
 
         file.Parent.MoveFile(file, anotherFolder);
 
         company.Root.Files.Should().BeEmpty();
         anotherFolder.Files.Should().Contain(file);
         file.Parent.Should().Be(anotherFolder);
+        file.Company.Should().Be(anotherFolder.Company);
     }
 
     [Fact]
