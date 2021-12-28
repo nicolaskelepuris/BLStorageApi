@@ -12,13 +12,16 @@ public class FolderTests
     {
         var root = Folder.CreateRoot("company");
         var company = new Company("company", root);
-        var subFolder = new Folder("subFolder", root, company);
+        var anotherRoot = Folder.CreateRoot("another company");
+        var anotherCompany = new Company("another company", anotherRoot);
+        var subFolder = new Folder("subFolder", anotherRoot, anotherCompany);
 
         root.AddSubFolder(subFolder);
 
         root.SubFolders.Should().HaveCount(1);
         root.SubFolders.Should().Contain(subFolder);
         subFolder.Parent.Should().Be(root);
+        root.Company.Should().Be(subFolder.Company);
     }
 
     [Fact]

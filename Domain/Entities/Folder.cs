@@ -50,6 +50,7 @@ public class Folder : BaseEntity
         ArgumentNullException.ThrowIfNull(subFolder);
 
         subFolder.Parent = this;
+        subFolder.Company = Company;
         subFolders.Add(subFolder);
     }
 
