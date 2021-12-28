@@ -201,5 +201,14 @@ public class FolderTests
         var folder = () => new Folder("name", parent: null);
 
         folder.Should().ThrowExactly<ArgumentNullException>();
+    }    
+
+    [Fact]
+    public void ConstructFolder_NullCompany_ShouldThrow()
+    {
+        var root = Folder.CreateRoot("root");
+        var folder = () => new Folder("name", parent: root, company: null);
+
+        folder.Should().ThrowExactly<ArgumentNullException>();
     }
 }

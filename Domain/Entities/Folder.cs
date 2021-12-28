@@ -23,6 +23,7 @@ public class Folder : BaseEntity
     public Folder(string name, Folder parent, Company company) : this(name)
     {
         ArgumentNullException.ThrowIfNull(parent);
+        ArgumentNullException.ThrowIfNull(company);
 
         Parent = parent;
         Company = company;
