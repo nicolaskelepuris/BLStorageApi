@@ -18,7 +18,7 @@ public class CompanyTests
     [Fact]
     public void ConstructCompany_NullName_ShouldThrow()
     {        
-        var constructor = () => new Company(name: null);
+        var constructor = () => new Company(name: null!);
 
         constructor.Should().ThrowExactly<ArgumentNullException>();
     }

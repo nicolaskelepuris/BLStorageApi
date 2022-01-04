@@ -20,7 +20,7 @@ public class FileTests
     [Fact]
     public void ConstructFile_NullParent_ShouldThrow()
     {
-        var file = () => new File("file", parent: null);
+        var file = () => new File("file", parent: null!);
 
         file.Should().ThrowExactly<ArgumentNullException>();
     }
@@ -30,7 +30,7 @@ public class FileTests
     {
         var company = new Company("company");
 
-        var file = () => new File(name: null, parent: company.Root);
+        var file = () => new File(name: null!, parent: company.Root);
 
         file.Should().ThrowExactly<ArgumentNullException>();
     }

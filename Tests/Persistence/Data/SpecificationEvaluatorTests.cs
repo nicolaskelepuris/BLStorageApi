@@ -51,7 +51,7 @@ public class SpecificationEvaluatorTests
     {
         var specification = new Specification();
 
-        var evaluator = () => new SpecificationEvaluator<SomeEntity>(query: null, specification);
+        var evaluator = () => new SpecificationEvaluator<SomeEntity>(query: null!, specification);
 
         evaluator.Should().ThrowExactly<ArgumentNullException>();
     }
@@ -61,7 +61,7 @@ public class SpecificationEvaluatorTests
     {
         var query = new List<SomeEntity>().AsQueryable();
 
-        var evaluator = () => new SpecificationEvaluator<SomeEntity>(query, specification: null);
+        var evaluator = () => new SpecificationEvaluator<SomeEntity>(query, specification: null!);
 
         evaluator.Should().ThrowExactly<ArgumentNullException>();
     }

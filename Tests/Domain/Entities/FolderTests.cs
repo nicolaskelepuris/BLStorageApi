@@ -30,7 +30,7 @@ public class FolderTests
         var company = new Company("company");
         var subFolder = new Folder("subFolder", company.Root);
 
-        company.Root.Invoking(_ => _.MoveSubFolder(subFolder, destination: null))
+        company.Root.Invoking(_ => _.MoveSubFolder(subFolder, destination: null!))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
@@ -40,7 +40,7 @@ public class FolderTests
         var company = new Company("company");
         var destination = new Folder("destination", company.Root);
 
-        company.Root.Invoking(_ => _.MoveSubFolder(subFolder: null, destination))
+        company.Root.Invoking(_ => _.MoveSubFolder(subFolder: null!, destination))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
@@ -66,7 +66,7 @@ public class FolderTests
         var company = new Company("company");
         var file = new File("file", parent: company.Root);
 
-        company.Root.Invoking(_ => _.MoveFile(file, destination: null))
+        company.Root.Invoking(_ => _.MoveFile(file, destination: null!))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
@@ -76,7 +76,7 @@ public class FolderTests
         var company = new Company("company");
         var destination = new Folder("destination", parent: company.Root);
 
-        company.Root.Invoking(_ => _.MoveFile(file: null, destination))
+        company.Root.Invoking(_ => _.MoveFile(file: null!, destination))
             .Should().ThrowExactly<ArgumentNullException>();
     }
 
@@ -94,7 +94,7 @@ public class FolderTests
     [Fact]
     public void ConstructFolder_NullParent_ShouldThrow()
     {
-        var folder = () => new Folder("name", parent: null);
+        var folder = () => new Folder("name", parent: null!);
 
         folder.Should().ThrowExactly<ArgumentNullException>();
     }
@@ -103,7 +103,7 @@ public class FolderTests
     public void ConstructFolder_NullName_ShouldThrow()
     {
         var company = new Company("company");
-        var folder = () => new Folder(name: null, parent: company.Root);
+        var folder = () => new Folder(name: null!, parent: company.Root);
 
         folder.Should().ThrowExactly<ArgumentNullException>();
     }
