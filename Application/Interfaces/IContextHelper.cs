@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Domain.Entities;
 
-namespace Domain.Interfaces;
+namespace Application.Interfaces;
 public interface IContextHelper
 {
     string GetUserId();
