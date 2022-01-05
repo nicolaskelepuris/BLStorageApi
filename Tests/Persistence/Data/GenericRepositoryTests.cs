@@ -51,7 +51,7 @@ public class GenericRepositoryTests
     }
 
     [Fact]
-    public void Add_ValidEntity_ShouldAdd()
+    public void Add_ValidEntity_ShouldEnterAddedState()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
         var genericRepository = new GenericRepository<SomeEntity>(dbContext);
@@ -72,5 +72,29 @@ public class GenericRepositoryTests
         var add = () => genericRepository.Add(entity: null!);
 
         add.Should().ThrowExactly<ArgumentNullException>();
+    }
+
+    [Fact]
+    public void Update_ValidEntity_ShouldEnterModifiedState()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var entity = new SomeEntity();
+
+        genericRepository.Update(entity);
+
+        dbContext.Entry(entity).State.Should().Be(EntityState.Modified);
+        dbContext.Entities.Should().HaveCount(0);
+    }
+
+    [Fact]
+    public void Update_NullEntity_ShouldThrow()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+
+        var update = () => genericRepository.Update(entity: null!);
+
+        update.Should().ThrowExactly<ArgumentNullException>();
     }
 }

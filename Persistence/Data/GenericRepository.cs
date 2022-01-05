@@ -25,7 +25,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public void Update(T entity)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(entity);
+        
+        _context.Set<T>().Attach(entity);
+        _context.Entry(entity).State = EntityState.Modified;
     }
 
     public void Delete(T entity)
