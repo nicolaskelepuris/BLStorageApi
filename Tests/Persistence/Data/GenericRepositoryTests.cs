@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Domain.Entities.Base;
 using FluentAssertions;
@@ -150,5 +151,35 @@ public class GenericRepositoryTests
         var entityFound = await genericRepository.GetEntityByIdAsync(Guid.NewGuid());
 
         entityFound.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task ListAllAsync_ContainItems_ShouldList()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var entities = new List<SomeEntity>()
+        {
+            new SomeEntity(),
+            new SomeEntity(),
+            new SomeEntity()
+        };
+        await dbContext.Entities.AddRangeAsync(entities);
+        await dbContext.SaveChangesAsync();
+
+        var entitiesFound = await genericRepository.ListAllAsync();
+
+        entitiesFound.Should().HaveCount(entities.Count);
+    }
+
+    [Fact]
+    public async Task ListAllAsync_Empty_ShouldReturnEmptyList()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+
+        var entitiesFound = await genericRepository.ListAllAsync();
+
+        entitiesFound.Should().BeEmpty();
     }
 }
