@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Domain.Entities.Base;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -96,5 +97,31 @@ public class GenericRepositoryTests
         var update = () => genericRepository.Update(entity: null!);
 
         update.Should().ThrowExactly<ArgumentNullException>();
+    }
+
+    [Fact]
+    public async Task Delete_ValidEntity_ShouldEnterDeletedStateAsync()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var entity = new SomeEntity();
+        await dbContext.Entities.AddAsync(entity);
+        await dbContext.SaveChangesAsync();        
+
+        genericRepository.Delete(entity);
+
+        dbContext.Entry(entity).State.Should().Be(EntityState.Deleted);
+        dbContext.Entities.Should().HaveCount(1);
+    }
+
+    [Fact]
+    public void Delete_NullEntity_ShouldThrow()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+
+        var delete = () => genericRepository.Delete(entity: null!);
+
+        delete.Should().ThrowExactly<ArgumentNullException>();
     }
 }

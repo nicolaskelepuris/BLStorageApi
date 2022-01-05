@@ -26,14 +26,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public void Update(T entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
-        
+
         _context.Set<T>().Attach(entity);
         _context.Entry(entity).State = EntityState.Modified;
     }
 
     public void Delete(T entity)
     {
-        throw new NotImplementedException();
+        _context.Set<T>().Remove(entity);
     }
 
     public Task<T> GetEntityByIdAsync(Guid id)
