@@ -106,7 +106,7 @@ public class GenericRepositoryTests
         var genericRepository = new GenericRepository<SomeEntity>(dbContext);
         var entity = new SomeEntity();
         await dbContext.Entities.AddAsync(entity);
-        await dbContext.SaveChangesAsync();        
+        await dbContext.SaveChangesAsync();
 
         genericRepository.Delete(entity);
 
