@@ -100,7 +100,7 @@ public class GenericRepositoryTests
     }
 
     [Fact]
-    public async Task Delete_ValidEntity_ShouldEnterDeletedStateAsync()
+    public async Task Delete_ValidEntity_ShouldEnterDeletedState()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
         var genericRepository = new GenericRepository<SomeEntity>(dbContext);
@@ -123,5 +123,32 @@ public class GenericRepositoryTests
         var delete = () => genericRepository.Delete(entity: null!);
 
         delete.Should().ThrowExactly<ArgumentNullException>();
+    }
+
+    [Fact]
+    public async Task GetEntityByIdAsync_ValidId_ShouldGetEntity()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var entity = new SomeEntity();
+        await dbContext.Entities.AddAsync(entity);
+        await dbContext.SaveChangesAsync();
+        var id = entity.Id;
+
+        var entityFound = await genericRepository.GetEntityByIdAsync(id);
+
+        entityFound.Should().NotBeNull();
+        entityFound!.Id.Should().Be(id);
+    }
+
+    [Fact]
+    public async Task GetEntityByIdAsync_NotFoundEntity_ShouldReturnNull()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+
+        var entityFound = await genericRepository.GetEntityByIdAsync(Guid.NewGuid());
+
+        entityFound.Should().BeNull();
     }
 }

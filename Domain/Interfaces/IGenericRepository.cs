@@ -6,7 +6,7 @@ using Domain.Entities.Base;
 namespace Domain.Interfaces;
 public interface IGenericRepository<T> where T : BaseEntity
 {
-    Task<T> GetEntityByIdAsync(Guid id);
+    Task<T?> GetEntityByIdAsync(Guid id);
     Task<IReadOnlyList<T>> ListAllAsync();
     Task<T> GetEntityAsyncWithSpec(ISpecification<T> spec);
     Task<IReadOnlyList<T>> ListAsyncWithSpec(ISpecification<T> spec);
