@@ -19,21 +19,16 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public void Add(T entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
-        
+
         _context.Set<T>().Add(entity);
     }
 
-    public Task<int> CountAsync(ISpecification<T> spec)
+    public void Update(T entity)
     {
         throw new NotImplementedException();
     }
 
     public void Delete(T entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<T> GetEntityAsyncWithSpec(ISpecification<T> spec)
     {
         throw new NotImplementedException();
     }
@@ -48,12 +43,17 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         throw new NotImplementedException();
     }
 
-    public Task<IReadOnlyList<T>> ListAsyncWithSpec(ISpecification<T> spec)
+    public Task<T> GetEntityAsyncWithSpec(ISpecification<T> spec)
     {
         throw new NotImplementedException();
     }
 
-    public void Update(T entity)
+    public Task<int> CountAsync(ISpecification<T> spec)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IReadOnlyList<T>> ListAsyncWithSpec(ISpecification<T> spec)
     {
         throw new NotImplementedException();
     }
