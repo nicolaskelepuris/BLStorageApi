@@ -18,7 +18,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public void Add(T entity)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(entity);
+        
+        _context.Set<T>().Add(entity);
     }
 
     public Task<int> CountAsync(ISpecification<T> spec)
