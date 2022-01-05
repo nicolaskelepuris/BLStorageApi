@@ -62,7 +62,7 @@ public class GenericRepositoryTests
         genericRepository.Add(entity);
 
         dbContext.Entry(entity).State.Should().Be(EntityState.Added);
-        dbContext.Entities.Should().HaveCount(0);
+        dbContext.Entities.Should().BeEmpty();
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class GenericRepositoryTests
         genericRepository.Update(entity);
 
         dbContext.Entry(entity).State.Should().Be(EntityState.Modified);
-        dbContext.Entities.Should().HaveCount(0);
+        dbContext.Entities.Should().BeEmpty();
     }
 
     [Fact]
