@@ -324,4 +324,25 @@ public class GenericRepositoryTests
 
         entities.Should().BeEmpty();
     }
+
+    [Fact]
+    public async Task ListAsyncWithSpec_EntitiesFound_ShouldReturnListWithEntities()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var seed = new List<SomeEntity>()
+        {
+            new SomeEntity(),
+            new SomeEntity(),
+            new SomeEntity()
+        };
+        dbContext.Entities.AddRange(seed);
+        await dbContext.SaveChangesAsync();
+        var specificationMock = new Mock<ISpecification<SomeEntity>>();
+        var specificationEvaluatorMock = GetSpecificationEvaluator(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluatorMock.Object);
+
+        var entities = await genericRepository.ListAsyncWithSpec(specificationMock.Object);
+
+        entities.Should().HaveCount(seed.Count);
+    }
 }
