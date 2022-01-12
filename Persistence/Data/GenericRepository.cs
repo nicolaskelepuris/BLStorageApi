@@ -58,8 +58,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<int> CountAsync(ISpecification<T> spec)
     {
-        var query = _specificationEvaluator.EvaluateForCount(_context.Set<T>().AsQueryable(), spec);
-        return await query.CountAsync();
+        return await ApplySpecificationForCount(spec).CountAsync();
     }
 
     public Task<IReadOnlyList<T>> ListAsyncWithSpec(ISpecification<T> spec)
@@ -70,5 +69,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     private IQueryable<T> ApplySpecification(ISpecification<T> spec)
     {
         return _specificationEvaluator.Evaluate(_context.Set<T>().AsQueryable(), spec);
+    }
+
+    private IQueryable<T> ApplySpecificationForCount(ISpecification<T> spec)
+    {
+        return _specificationEvaluator.EvaluateForCount(_context.Set<T>().AsQueryable(), spec);
     }
 }
