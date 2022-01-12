@@ -4,16 +4,20 @@ using System.Threading.Tasks;
 using Domain.Entities.Base;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Interfaces;
 
 namespace Persistence.Data;
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
     private readonly DbContext _context;
-    public GenericRepository(DbContext context)
+    public readonly ISpecificationEvaluator<T> _specificationEvaluator;
+
+    public GenericRepository(DbContext context, ISpecificationEvaluator<T> specificationEvaluator)
     {
         ArgumentNullException.ThrowIfNull(context);
 
         _context = context;
+        _specificationEvaluator = specificationEvaluator;
     }
 
     public void Add(T entity)
@@ -48,6 +52,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public Task<T> GetEntityAsyncWithSpec(ISpecification<T> spec)
     {
+        _specificationEvaluator.Evaluate(_context.Set<T>().AsQueryable(), spec);
         return Task.FromResult<T>(null!);
     }
 

@@ -37,14 +37,14 @@ public class GenericRepositoryTests
         }
     }
 
-    public bool IsPaginationEnabled => throw new NotImplementedException();
+    private ISpecificationEvaluator<SomeEntity> specificationEvaluator => new Mock<ISpecificationEvaluator<SomeEntity>>().Object;
 
     [Fact]
     public void Constructor_Valid_ShouldConstruct()
     {
         var dbContext = new DbContext(new DbContextOptions<DbContext>());
 
-        var genericRepository = () => new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = () => new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
 
         genericRepository.Should().NotThrow();
     }
@@ -52,7 +52,7 @@ public class GenericRepositoryTests
     [Fact]
     public void Constructor_NullContext_ShouldThrow()
     {
-        var genericRepository = () => new GenericRepository<SomeEntity>(context: null!);
+        var genericRepository = () => new GenericRepository<SomeEntity>(context: null!, specificationEvaluator);
 
         genericRepository.Should().ThrowExactly<ArgumentNullException>();
     }
@@ -61,7 +61,7 @@ public class GenericRepositoryTests
     public void Add_ValidEntity_ShouldEnterAddedState()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
-        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
         var entity = new SomeEntity();
 
         genericRepository.Add(entity);
@@ -74,7 +74,7 @@ public class GenericRepositoryTests
     public void Add_NullEntity_ShouldThrow()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
-        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
 
         var add = () => genericRepository.Add(entity: null!);
 
@@ -85,7 +85,7 @@ public class GenericRepositoryTests
     public void Update_ValidEntity_ShouldEnterModifiedState()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
-        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
         var entity = new SomeEntity();
 
         genericRepository.Update(entity);
@@ -98,7 +98,7 @@ public class GenericRepositoryTests
     public void Update_NullEntity_ShouldThrow()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
-        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
 
         var update = () => genericRepository.Update(entity: null!);
 
@@ -109,7 +109,7 @@ public class GenericRepositoryTests
     public async Task Delete_ValidEntity_ShouldEnterDeletedState()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
-        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
         var entity = new SomeEntity();
         await dbContext.Entities.AddAsync(entity);
         await dbContext.SaveChangesAsync();
@@ -124,7 +124,7 @@ public class GenericRepositoryTests
     public void Delete_NullEntity_ShouldThrow()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
-        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
 
         var delete = () => genericRepository.Delete(entity: null!);
 
@@ -135,7 +135,7 @@ public class GenericRepositoryTests
     public async Task GetEntityByIdAsync_ValidId_ShouldGetEntity()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
-        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
         var entity = new SomeEntity();
         await dbContext.Entities.AddAsync(entity);
         await dbContext.SaveChangesAsync();
@@ -151,7 +151,7 @@ public class GenericRepositoryTests
     public async Task GetEntityByIdAsync_NotFoundEntity_ShouldReturnNull()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
-        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
 
         var entityFound = await genericRepository.GetEntityByIdAsync(Guid.NewGuid());
 
@@ -162,7 +162,7 @@ public class GenericRepositoryTests
     public async Task ListAllAsync_ContainItems_ShouldList()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
-        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
         var entities = new List<SomeEntity>()
         {
             new SomeEntity(),
@@ -181,7 +181,7 @@ public class GenericRepositoryTests
     public async Task ListAllAsync_Empty_ShouldReturnEmptyList()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
-        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
 
         var entitiesFound = await genericRepository.ListAllAsync();
 
@@ -192,10 +192,24 @@ public class GenericRepositoryTests
     public async Task GetEntityAsyncWithSpec_NotFound_ShouldReturnNull()
     {
         var dbContext = new SomeDbContext(dbContextOptions);
-        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluator);
 
         var entity = await genericRepository.GetEntityAsyncWithSpec(new Mock<ISpecification<SomeEntity>>().Object);
 
         entity.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetEntityAsyncWithSpec_ShouldEvaluateSpecification()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var specificationMock = new Mock<ISpecification<SomeEntity>>();
+        var specificationEvaluatorMock = new Mock<ISpecificationEvaluator<SomeEntity>>();
+        specificationEvaluatorMock.Setup(_ => _.Evaluate(dbContext.Entities, specificationMock.Object));
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluatorMock.Object);
+
+        var entity = await genericRepository.GetEntityAsyncWithSpec(specificationMock.Object);
+
+        specificationEvaluatorMock.Verify(_ => _.Evaluate(dbContext.Entities, specificationMock.Object), Times.Once);
     }
 }
