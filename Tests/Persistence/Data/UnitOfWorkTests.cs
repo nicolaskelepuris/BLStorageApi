@@ -44,4 +44,16 @@ public class UnitOfWorkTests
 
         savedChanges.Should().BeTrue();
     }
+
+    [Fact]
+    public void Dispose_ShouldDisposeContext()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var unitOfWork = new UnitOfWork(dbContext);
+        var useDbContextAction = () => dbContext.Database;
+
+        unitOfWork.Dispose();
+
+        useDbContextAction.Should().ThrowExactly<ObjectDisposedException>();
+    }
 }

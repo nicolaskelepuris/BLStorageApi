@@ -19,7 +19,7 @@ public class UnitOfWork : IUnitOfWork
 
     public void Dispose()
     {
-        throw new System.NotImplementedException();
+        _context.Dispose();
     }
 
     public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity
