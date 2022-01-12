@@ -41,6 +41,7 @@ public class GenericRepositoryTests
     {
         var mock = new Mock<ISpecificationEvaluator<SomeEntity>>();
         mock.Setup(_ => _.Evaluate(dbContext.Entities, It.IsAny<ISpecification<SomeEntity>>())).Returns(dbContext.Entities);
+        mock.Setup(_ => _.EvaluateForCount(dbContext.Entities, It.IsAny<ISpecification<SomeEntity>>())).Returns(dbContext.Entities);
 
         return mock;
     }
@@ -275,5 +276,26 @@ public class GenericRepositoryTests
         var count = await genericRepository.CountAsync(specificationMock.Object);
 
         count.Should().Be(0);
+    }
+
+    [Fact]
+    public async Task CountAsync_EntitiesFound_ShouldReturnEntitiesCount()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var entities = new List<SomeEntity>()
+        {
+            new SomeEntity(),
+            new SomeEntity(),
+            new SomeEntity()
+        };
+        dbContext.Entities.AddRange(entities);
+        await dbContext.SaveChangesAsync();
+        var specificationMock = new Mock<ISpecification<SomeEntity>>();
+        var specificationEvaluatorMock = GetSpecificationEvaluator(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluatorMock.Object);
+
+        var count = await genericRepository.CountAsync(specificationMock.Object);
+
+        count.Should().Be(entities.Count);
     }
 }
