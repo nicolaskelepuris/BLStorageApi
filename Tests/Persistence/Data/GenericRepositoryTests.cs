@@ -263,4 +263,17 @@ public class GenericRepositoryTests
 
         specificationEvaluatorMock.Verify(_ => _.EvaluateForCount(dbContext.Entities, specificationMock.Object), Times.Once);
     }
+
+    [Fact]
+    public async Task CountAsync_NoEntity_ShouldReturnZero()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var specificationMock = new Mock<ISpecification<SomeEntity>>();
+        var specificationEvaluatorMock = GetSpecificationEvaluator(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluatorMock.Object);
+
+        var count = await genericRepository.CountAsync(specificationMock.Object);
+
+        count.Should().Be(0);
+    }
 }
