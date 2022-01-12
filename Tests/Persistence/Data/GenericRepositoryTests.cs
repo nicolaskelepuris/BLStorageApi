@@ -7,17 +7,18 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Persistence.Data;
+using Persistence.Interfaces;
 using Xunit;
 
 namespace Tests.Persistence.Data;
 public class GenericRepositoryTests
 {
-    private class SomeEntity : BaseEntity
+    public class SomeEntity : BaseEntity
     {
 
     }
 
-    private class SomeDbContext : DbContext
+    public class SomeDbContext : DbContext
     {
         public SomeDbContext(DbContextOptions options) : base(options)
         {

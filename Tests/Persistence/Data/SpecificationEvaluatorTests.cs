@@ -11,7 +11,7 @@ using Xunit;
 namespace Tests.Persistence.Data;
 public class SpecificationEvaluatorTests
 {
-    private class SomeEntity : BaseEntity
+    public class SomeEntity : BaseEntity
     {
         
     }
