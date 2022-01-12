@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Domain.Entities.Base;
 using Domain.Interfaces;
@@ -52,8 +53,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<T?> GetEntityAsyncWithSpec(ISpecification<T> spec)
     {
-        var query = _specificationEvaluator.Evaluate(_context.Set<T>().AsQueryable(), spec);
-        return await query.FirstOrDefaultAsync();
+        return await ApplySpecification(spec).FirstOrDefaultAsync();
     }
 
     public Task<int> CountAsync(ISpecification<T> spec)
@@ -64,5 +64,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public Task<IReadOnlyList<T>> ListAsyncWithSpec(ISpecification<T> spec)
     {
         throw new NotImplementedException();
+    }
+
+    private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+    {
+        return _specificationEvaluator.Evaluate(_context.Set<T>().AsQueryable(), spec);
     }
 }
