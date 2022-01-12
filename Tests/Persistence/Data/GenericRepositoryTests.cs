@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Domain.Entities.Base;
+using Domain.Interfaces;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
@@ -24,6 +26,26 @@ public class GenericRepositoryTests
         public virtual DbSet<SomeEntity> Entities { get; set; } = null!;
     }
 
+    private class Specification : ISpecification<SomeEntity>
+    {
+        public Expression<Func<SomeEntity, bool>> Criteria => throw new NotImplementedException();
+
+        public Expression<Func<SomeEntity, object>> OrderBy => throw new NotImplementedException();
+
+        public Expression<Func<SomeEntity, object>> OrderByDescending => throw new NotImplementedException();
+
+        public List<Expression<Func<SomeEntity, object>>> Includes => throw new NotImplementedException();
+
+        public List<string> IncludesByString => throw new NotImplementedException();
+
+        public int Take => throw new NotImplementedException();
+
+        public int Skip => throw new NotImplementedException();
+
+        public bool IsPaginationEnabled => throw new NotImplementedException();
+    }
+
+
     private DbContextOptions<SomeDbContext> dbContextOptions
     {
         get
@@ -33,6 +55,8 @@ public class GenericRepositoryTests
             return optionsBuilder.Options;
         }
     }
+
+    public bool IsPaginationEnabled => throw new NotImplementedException();
 
     [Fact]
     public void Constructor_Valid_ShouldConstruct()
@@ -181,5 +205,16 @@ public class GenericRepositoryTests
         var entitiesFound = await genericRepository.ListAllAsync();
 
         entitiesFound.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task GetEntityAsyncWithSpec_NotFound_ShouldReturnNull()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext);
+
+        var entity = await genericRepository.GetEntityAsyncWithSpec(new Specification());
+
+        entity.Should().BeNull();
     }
 }
