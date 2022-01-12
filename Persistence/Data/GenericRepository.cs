@@ -63,7 +63,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public Task<IReadOnlyList<T>> ListAsyncWithSpec(ISpecification<T> spec)
     {
-        throw new NotImplementedException();
+        ApplySpecification(spec);
+        return Task.FromResult((IReadOnlyList<T>)new List<T>());
     }
 
     private IQueryable<T> ApplySpecification(ISpecification<T> spec)
