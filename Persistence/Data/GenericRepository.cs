@@ -58,7 +58,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public Task<int> CountAsync(ISpecification<T> spec)
     {
-        throw new NotImplementedException();
+        _specificationEvaluator.EvaluateForCount(_context.Set<T>().AsQueryable(), spec);
+        return Task.FromResult(0);
     }
 
     public Task<IReadOnlyList<T>> ListAsyncWithSpec(ISpecification<T> spec)
