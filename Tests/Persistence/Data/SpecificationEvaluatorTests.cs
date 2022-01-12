@@ -36,33 +36,36 @@ public class SpecificationEvaluatorTests
     }
 
     [Fact]
-    public void Construct_Valid_ShouldConstruct()
+    public void EvaluateForCount_NotNullQueryAndSpecification_ShouldNotThrow()
     {
         var query = new List<SomeEntity>().AsQueryable();
         var specification = new Specification();
+        var evaluator = new SpecificationEvaluator<SomeEntity>();
+        
+        var evaluateForCount = () => evaluator.EvaluateForCount(query, specification);
 
-        var evaluator = () => new SpecificationEvaluator<SomeEntity>(query, specification);
-
-        evaluator.Should().NotThrow();
+        evaluateForCount.Should().NotThrow<ArgumentNullException>();
     }
 
     [Fact]
-    public void Construct_NullQuery_ShouldThrow()
+    public void EvaluateForCount_NullQuery_ShouldThrow()
     {
         var specification = new Specification();
+        var evaluator = new SpecificationEvaluator<SomeEntity>();
 
-        var evaluator = () => new SpecificationEvaluator<SomeEntity>(query: null!, specification);
+        var evaluateForCount = () => evaluator.EvaluateForCount(query: null!, specification);
 
-        evaluator.Should().ThrowExactly<ArgumentNullException>();
+        evaluateForCount.Should().ThrowExactly<ArgumentNullException>();
     }
 
     [Fact]
-    public void Construct_NullSpecification_ShouldThrow()
+    public void evaluateForCount_NullSpecification_ShouldThrow()
     {
         var query = new List<SomeEntity>().AsQueryable();
+        var evaluator = new SpecificationEvaluator<SomeEntity>();
 
-        var evaluator = () => new SpecificationEvaluator<SomeEntity>(query, specification: null!);
+        var evaluateForCount = () => evaluator.EvaluateForCount(query, specification: null!);
 
-        evaluator.Should().ThrowExactly<ArgumentNullException>();
+        evaluateForCount.Should().ThrowExactly<ArgumentNullException>();
     }
 }

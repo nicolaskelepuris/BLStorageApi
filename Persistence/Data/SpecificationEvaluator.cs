@@ -7,26 +7,31 @@ using Microsoft.EntityFrameworkCore;
 namespace Persistence.Data;
 public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
 {
-    private IQueryable<TEntity> query;
-    private readonly ISpecification<TEntity> _specification;
-    public SpecificationEvaluator(IQueryable<TEntity> query, ISpecification<TEntity> specification)
+    private IQueryable<TEntity>? query;
+    private ISpecification<TEntity>? specification;
+
+    private void Initialize(IQueryable<TEntity> query, ISpecification<TEntity> specification)
     {
         ArgumentNullException.ThrowIfNull(query);
         ArgumentNullException.ThrowIfNull(specification);
 
         this.query = query;
-        _specification = specification;
+        this.specification = specification;
     }
 
-    public IQueryable<TEntity> EvaluateForCount()
+    public IQueryable<TEntity> EvaluateForCount(IQueryable<TEntity> query, ISpecification<TEntity> specification)
     {
+        Initialize(query, specification);
+
         ApplyCriteria();
 
         return query;
     }
 
-    public IQueryable<TEntity> Evaluate()
+    public IQueryable<TEntity> Evaluate(IQueryable<TEntity> query, ISpecification<TEntity> specification)
     {
+        Initialize(query, specification);
+        
         ApplyCriteria();
         ApplyOrderBy();
         ApplyOrderByDescending();
@@ -38,46 +43,46 @@ public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
 
     private void ApplyCriteria()
     {
-        if (_specification.Criteria != null)
+        if (specification!.Criteria != null)
         {
-            query = query.Where(_specification.Criteria);
+            query = query!.Where(specification.Criteria);
         }
     }
 
     private void ApplyOrderBy()
     {
-        if (_specification.OrderBy != null)
+        if (specification!.OrderBy != null)
         {
-            query = query.OrderBy(_specification.OrderBy);
+            query = query!.OrderBy(specification.OrderBy);
         }
     }
 
     private void ApplyOrderByDescending()
     {
-        if (_specification.OrderByDescending != null)
+        if (specification!.OrderByDescending != null)
         {
-            query = query.OrderByDescending(_specification.OrderByDescending);
+            query = query!.OrderByDescending(specification.OrderByDescending);
         }
     }
 
     private void ApplyPagination()
     {
-        if (_specification.IsPaginationEnabled)
+        if (specification!.IsPaginationEnabled)
         {
-            query = query.Skip(_specification.Skip).Take(_specification.Take);
+            query = query!.Skip(specification.Skip).Take(specification.Take);
         }
     }
 
     private void ApplyIncludes()
     {
-        if (_specification.Includes.Any())
+        if (specification!.Includes.Any())
         {
-            query = _specification.Includes.Aggregate(query, (current, include) => current.Include(include));
+            query = specification.Includes.Aggregate(query, (current, include) => current!.Include(include));
         }
 
-        if (_specification.IncludesByString.Any())
+        if (specification.IncludesByString.Any())
         {
-            query = _specification.IncludesByString.Aggregate(query, (current, include) => current.Include(include));
+            query = specification.IncludesByString.Aggregate(query, (current, include) => current!.Include(include));
         }
     }
 }
