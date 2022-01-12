@@ -50,10 +50,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await _context.Set<T>().ToListAsync();
     }
 
-    public Task<T> GetEntityAsyncWithSpec(ISpecification<T> spec)
+    public async Task<T?> GetEntityAsyncWithSpec(ISpecification<T> spec)
     {
-        _specificationEvaluator.Evaluate(_context.Set<T>().AsQueryable(), spec);
-        return Task.FromResult<T>(null!);
+        var query = _specificationEvaluator.Evaluate(_context.Set<T>().AsQueryable(), spec);
+        return await query.FirstOrDefaultAsync();
     }
 
     public Task<int> CountAsync(ISpecification<T> spec)

@@ -8,7 +8,7 @@ public interface IGenericRepository<T> where T : BaseEntity
 {
     Task<T?> GetEntityByIdAsync(Guid id);
     Task<IReadOnlyList<T>> ListAllAsync();
-    Task<T> GetEntityAsyncWithSpec(ISpecification<T> spec);
+    Task<T?> GetEntityAsyncWithSpec(ISpecification<T> spec);
     Task<IReadOnlyList<T>> ListAsyncWithSpec(ISpecification<T> spec);
     Task<int> CountAsync(ISpecification<T> spec);
     void Add(T entity);
