@@ -229,7 +229,7 @@ public class GenericRepositoryTests
         var specificationEvaluatorMock = GetSpecificationEvaluator(dbContext);
         var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluatorMock.Object);
 
-        var entity = await genericRepository.GetEntityAsyncWithSpec(specificationMock.Object);
+        await genericRepository.GetEntityAsyncWithSpec(specificationMock.Object);
 
         specificationEvaluatorMock.Verify(_ => _.Evaluate(dbContext.Entities, specificationMock.Object), Times.Once);
     }
@@ -259,7 +259,7 @@ public class GenericRepositoryTests
         var specificationEvaluatorMock = GetSpecificationEvaluator(dbContext);
         var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluatorMock.Object);
 
-        var entity = await genericRepository.CountAsync(specificationMock.Object);
+        await genericRepository.CountAsync(specificationMock.Object);
 
         specificationEvaluatorMock.Verify(_ => _.EvaluateForCount(dbContext.Entities, specificationMock.Object), Times.Once);
     }
