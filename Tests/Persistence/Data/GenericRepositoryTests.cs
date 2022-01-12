@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Domain.Entities.Base;
 using Domain.Interfaces;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using Persistence.Data;
 using Xunit;
 
@@ -25,26 +25,6 @@ public class GenericRepositoryTests
 
         public virtual DbSet<SomeEntity> Entities { get; set; } = null!;
     }
-
-    private class Specification : ISpecification<SomeEntity>
-    {
-        public Expression<Func<SomeEntity, bool>> Criteria => throw new NotImplementedException();
-
-        public Expression<Func<SomeEntity, object>> OrderBy => throw new NotImplementedException();
-
-        public Expression<Func<SomeEntity, object>> OrderByDescending => throw new NotImplementedException();
-
-        public List<Expression<Func<SomeEntity, object>>> Includes => throw new NotImplementedException();
-
-        public List<string> IncludesByString => throw new NotImplementedException();
-
-        public int Take => throw new NotImplementedException();
-
-        public int Skip => throw new NotImplementedException();
-
-        public bool IsPaginationEnabled => throw new NotImplementedException();
-    }
-
 
     private DbContextOptions<SomeDbContext> dbContextOptions
     {
@@ -213,7 +193,7 @@ public class GenericRepositoryTests
         var dbContext = new SomeDbContext(dbContextOptions);
         var genericRepository = new GenericRepository<SomeEntity>(dbContext);
 
-        var entity = await genericRepository.GetEntityAsyncWithSpec(new Specification());
+        var entity = await genericRepository.GetEntityAsyncWithSpec(new Mock<ISpecification<SomeEntity>>().Object);
 
         entity.Should().BeNull();
     }
