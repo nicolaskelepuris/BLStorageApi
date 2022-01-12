@@ -3,9 +3,10 @@ using System.Linq;
 using Domain.Entities.Base;
 using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Interfaces;
 
 namespace Persistence.Data;
-public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
+public class SpecificationEvaluator<TEntity> : ISpecificationEvaluator<TEntity> where TEntity : BaseEntity
 {
     private IQueryable<TEntity>? query;
     private ISpecification<TEntity>? specification;
