@@ -311,4 +311,17 @@ public class GenericRepositoryTests
 
         specificationEvaluatorMock.Verify(_ => _.Evaluate(dbContext.Entities, specificationMock.Object), Times.Once);
     }
+
+    [Fact]
+    public async Task ListAsyncWithSpec_NoEntities_ShouldReturnEmptyList()
+    {
+        var dbContext = new SomeDbContext(dbContextOptions);
+        var specificationMock = new Mock<ISpecification<SomeEntity>>();
+        var specificationEvaluatorMock = GetSpecificationEvaluator(dbContext);
+        var genericRepository = new GenericRepository<SomeEntity>(dbContext, specificationEvaluatorMock.Object);
+
+        var entities = await genericRepository.ListAsyncWithSpec(specificationMock.Object);
+
+        entities.Should().BeEmpty();
+    }
 }
